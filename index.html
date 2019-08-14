@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>פיצה מקס</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body dir="rtl" class="bg-light">
+  <!-- navbar -->
+  <nav class="navbar navbar-light bg-white">
+      <span class="navbar-brand mb-0 h1" style="font-size: 2.5rem !important">פיצה מקס</span>
+  </nav>
+  <div class="container mt-4">
+    <div class="row" id="pizzaReservation"  >
+      <!-- FIRST PIZZA -->
+      <div class="col-md-4 " >
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="img/pizza.jpg" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text text-right">פיצה ענקית (8 משולשים)</p>
+              <p class="card-text text-center">35 ש"ח</p>
+              <div class="row p-3">
+                  <div class="d-flex justify-content-center mb-3 w-100">
+                    <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('bigPizza', 'remove', 35)">-</button>
+                    
+                    <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('bigPizza', 'add', 35)">+</button>
+
+                </div>
+                 <label for="" id="bigPizza" class=" col-12 text-center h2">0</label>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+      <!-- SECOND PIZZA -->
+      <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="img/pizza.jpg" alt="Card image cap">
+          <div class="card-body">
+            <p class="card-text text-right">פיצה משפחתית (6 משולשים)</p>
+            <p class="card-text text-center">30 ש"ח</p>
+            <div class="row p-3">
+                <div class="d-flex justify-content-center mb-3 w-100">
+                  <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('famillyPizza','remove', 30 )">-</button>
+                  
+                  <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('famillyPizza', 'add', 30 )">+</button>
+
+              </div>
+               <label for="" id="famillyPizza" class=" col-12 text-center h2">0</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- THIRD PIZZA -->
+      <div iclass="col-md-4">
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="img/pizza.jpg" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text text-right">פיצה אישית (4 משולשים)</p>
+              <p class="card-text text-center">20 ש"ח</p>
+              <div class="row p-3">
+                  <div class="d-flex justify-content-center mb-3 w-100">
+                    <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('smallPizza', 'remove', 20)">-</button>
+                    
+                    <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('smallPizza', 'add', 20)">+</button>
+
+                </div>
+                 <label for="" id="smallPizza" class=" col-12 text-center h2">0</label>
+              </div>
+            </div>
+          </div>
+      </div>
+
+    </div>
+    
+    
+    <!-- invitation pizza summary-->
+    <div id="pizzaSummary" class="row d-none">
+      <h1 class="text-center w-100 mb-4 col-12">בחירת תוספות לפיצה</h1>
+      <div id="bigPizzaSummary" class="col-12">
+      </div>
+      <hr>
+      <div id="famillyPizzaSummary" class="col-12">
+      </div>
+      <hr>
+      <div id="smallPizzaSummary" class="col-12"></div>
+      <h2 class="text-center w-100 mb-4 col-12">בחירת רטבים</h3>
+      <p class="w-100 text-right">רוטב ראשון בחינם וכל אחד נוסף יעלה 2 ש"ח</p>
+
+      <!-- רטבים -->
+      <div class="row w-100 mb-2">
+          <h4 class="col-lg-2 text-right col-sm-5">שום</h4>
+          <select class="form-control col-lg-2 col-sm-6 text-right" onchange="saucesChoose('sauceGarlic', 'שום')" id="sauceGarlic" >
+              <option selected>0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+          </select>
+      </div>
+      <div class="row w-100 mb-2">
+          <h4 class="col-lg-2 col-sm-5 text-right">אלף האיים</h4>
+          <select class="form-control col-lg-2 col-sm-6 text-right" onchange="saucesChoose('sauceThousandIslandDressing', 'אלף האיים')" id="sauceThousandIslandDressing" >
+              <option selected>0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+          </select>
+      </div>
+      <div class="row w-100 mb-2">
+          <h4 class="col-lg-2 text-right col-sm-5">קטשופ</h4>
+          <select class="form-control col-lg-2 col-sm-6 text-right" onchange="saucesChoose('sauceKetchup', 'קטשופ')" id="sauceKetchup" >
+              <option selected>0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+          </select>
+      </div>
+      <div class="row w-100 mb-2">
+          <h4 class="col-lg-2 text-right col-sm-5">פיצה</h4>
+          <select class="form-control col-lg-2 col-sm-6 text-right" onchange="saucesChoose('saucePizza', 'פיצה')" id="saucePizza" >
+              <option selected>0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+          </select>
+      </div>
+    
+      
+      
+    </div>
+
+    <!-- extra to pizza  -->
+    <div id="pizzaExtra" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">תוספות לפיצה</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body text-right">
+              <p>בחר את התוספות הרצויות:</p>
+              <p>
+                <span class="font-weight-bold">מחיר התוספות:</span><br/>
+                <span id="extraPizzaCost"></span>
+              </p>
+             
+              <hr/>
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input extra-pizza" type="radio" name="inlineRadioOptions" id="halfPizza" value="halfPizza">
+                <label class="form-check-label mr-1" for="halfPizza">כל תופסת על חצי מגש</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input extra-pizza" type="radio" name="inlineRadioOptions" id="allPizza" value="allPizza">
+                <label class="form-check-label mr-1" for="allPizza">כל תופסת על מגש שלם</label>
+              </div><hr>
+              <!-- extra -->
+              <div class="row">
+                  <div class="form-check form-check-inline col-12">
+                      <input class="form-check-input extra-pizza" type="checkbox" id="tomato" value="tomato">
+                      <label class="form-check-label mr-1" for="tomato">עגבניה</label>
+                  </div>
+
+                  <div class="form-check form-check-inline col-12">
+                      <input class="form-check-input extra-pizza" type="checkbox" id="onion" value="onion">
+                      <label class="form-check-label mr-1" for="onion">בצל</label>
+                  </div>
+
+                  <div class="form-check form-check-inline col-12">
+                      <input class="form-check-input extra-pizza" type="checkbox" id="machroom" value="machroom">
+                      <label class="form-check-label mr-1" for="machroom">פטריות</label>
+                  </div>
+
+                  <div class="form-check form-check-inline col-12">
+                      <input class="form-check-input extra-pizza" type="checkbox" id="corn" value="corn">
+                      <label class="form-check-label mr-1" for="corn">תירס</label>
+                  </div>
+
+                  <div class="form-check form-check-inline col-12">
+                      <input class="form-check-input extra-pizza" type="checkbox" id="blackOlive" value="blackOlive">
+                      <label class="form-check-label mr-1" for="blackOlive">זיתים שחורים</label>
+                  </div>
+
+                  <div class="form-check form-check-inline col-12">
+                      <input class="form-check-input extra-pizza" type="checkbox" id="greenOlive" value="greenOlive">
+                      <label class="form-check-label mr-1" for="greenOlive">זיתים ירוקים</label>
+                  </div>
+
+                  <p class="font-weight-bold w-100 mt-1 mb-0">תוספת מיוחדת:</p>
+                  <div class="form-check form-check-inline col-12">
+
+                    <input class="form-check-input extra-pizza" type="checkbox" id="extraCheese" value="extraCheese">
+                    <label class="form-check-label mr-1" for="extraCheese">אקסטרה גבינה</label>
+                  </div>
+
+                  <p id="extra-pizza-message-error" class="w-100 text-danger d-none">*עד שתי תוספות לכל מגש</p>
+                  <div class="form-group col-12 mt-3">
+                      <textarea class="form-control" id="comment" placeholder="הערה" ></textarea>
+                   </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button id="saveExtraPizza" type="button" class="btn btn-primary" >שמור</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">סגור</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- THIRD SCREEN drink option -->
+    <div class="row d-none" id="drinkOption">
+      <h1 class="col-12 text-center">בחירת משקה</h1>
+      <h2 class="col-12 text-right">פחית 6 ש"ח</h2>
+
+      <div class="form-check form-check-inline col-12">
+          <input class="form-check-input drink-choose" type="checkbox" id="colaCan" data-cost="6">
+          <label class="form-check-label mr-1" for="colaCan">פחית קולה</label>
+      </div>
+      <div class="form-check form-check-inline col-12 mb-3">
+          <input class="form-check-input drink-choose" type="checkbox"  data-cost="6" id="spriteCan">
+          <label class="form-check-label mr-1" for="spriteCan">פחית ספרייט</label>
+      </div>
+
+
+      <h2 class="col-12 text-right">בקבוק קטן 9 ש"ח</h2>
+      <div class="form-check form-check-inline col-12">
+          <input class="form-check-input drink-choose" type="checkbox" id="smallBottleCola"data-cost="9" data-name="בקבוק קו">
+          <label class="form-check-label mr-1" for="smallBottleCola">
+            בקבוק קטן של קולה</label>
+      </div>
+
+      <div class="form-check form-check-inline col-12 mb-3">
+          <input class="form-check-input drink-choose" type="checkbox" id="smallBottleSprite" data-cost="9">
+          <label class="form-check-label mr-1" for="smallBottleSprite">בקבוק קטן של ספרייט</label>
+      </div>
+
+      <h2 class="col-12 text-right">בקבוק גדול 12 ש"ח</h2>
+      <div class="form-check form-check-inline col-12">
+          <input class="form-check-input drink-choose" type="checkbox" id="bigBottleCola" data-cost="12">
+          <label class="form-check-label mr-1" for="bigBottleCola">בקבוק גדול של קולה</label>
+      </div>
+      <div class="form-check form-check-inline col-12">
+          <input class="form-check-input drink-choose" type="checkbox" id="bigBottleSprite" data-cost="12">
+          <label class="form-check-label mr-1" for="bigBottleSprite">בקבוק גדול של ספרייט</label>
+      </div>
+    </div>
+
+    <!-- summary ORDER -->
+    <div id="orderSummary" class="row d-none">
+      <h2 class="text-center"> סיכום הזמנה</h2>
+
+      <div id="pizzaSummaryOrder" class="col-12 text-right">
+          <h4>פיצות:</h4>
+      </div>
+ 
+      <div id="drinkSummary" class="col-12 text-right d-none">
+        <hr/>
+        <h4>שתייה:</h4>
+      </div>
+
+      <div id="saucesSummary" class="col-12 text-right d-none">
+        <hr/>
+        <h4>רטבים:</h4>
+
+      </div>
+    </div>
+    
+    <!-- total price -->
+    <div class="col-12 text-center mt-5 h2">
+      סה"כ: 
+      <span id="price">0</span>
+      <span>ש"ח</span><br/>
+
+      <div id="totalToPayText" class="d-none h4">
+        <span>לתשלום העבר כרטיס אשראי</span><br>
+        <span>שלם במטבעות ושטרות, המכונה מחזירה עודף</span>
+      </div>
+    </div>
+
+    <div id="btn-continue-and-reload" class="d-flex justify-content-end mb-3">
+        <a id="btnReload" class="btn btn-danger mt-3 p-3 d-none" onClick="window.location.reload();" href="">חזרה למסך הבית</a>
+        <button id="continueBtn" class="btn btn-success mt-3 p-3" style="margin-right: 15px">המשך</button>
+        
+    </div>
+    
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="./script.js"></script>
+</body>
+</html>

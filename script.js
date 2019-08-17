@@ -11,10 +11,14 @@ var countExtraPizzaChoose = 0;
 let sauceChoose = [];
 
 // remove or add 1 to input text of the pizzaId
-function changePizzaAmount(pizzaId, type, cost){
-
-    let amountPizza = $(`#${pizzaId}`).text();
-    if(type === 'add'){
+function changePizzaAmount(id, btnType, cost, type){
+    if(type === "sauce"){
+        const hebrewName = document.getElementById(id).getAttribute('data-name');
+        saucesChoose(id, hebrewName);
+    }
+    
+    let amountPizza = $(`#${id}`).text();
+    if(btnType === 'add'){
         price += cost;
         amountPizza++;
     }
@@ -26,7 +30,7 @@ function changePizzaAmount(pizzaId, type, cost){
         } 
     }
     $("#price").html(price);
-    $(`#${pizzaId}`).html(amountPizza);
+    $(`#${id}`).html(amountPizza);
 }
 
 
@@ -407,7 +411,8 @@ class extraPizzaChoose {
 //sauce choose
 function saucesChoose(id, sauceHebrewName){
     
-    let amount = $("#" + id).val();
+    let amount = parseInt($("#" + id).text()) + 1;
+    console.log(amount);
     let obj = {};
     obj["id"] = id;
     obj["sauceHebrewName"] = sauceHebrewName;

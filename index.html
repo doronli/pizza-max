@@ -33,7 +33,7 @@
             
             </div>
           </div>
-        </div>
+      </div>
       <!-- SECOND PIZZA -->
       <div class="col-md-4">
         <div class="card" style="width: 18rem;">
@@ -78,7 +78,7 @@
     
     <!-- invitation pizza summary-->
     <div id="pizzaSummary" class="row d-none">
-      <h1 class="text-center w-100 mb-4 col-12">בחירת תוספות לפיצה</h1>
+      <h1 class="text-center w-100 mb-4 col-12"><ins>בחירת תוספות לפיצה</ins></h1>
       <div id="bigPizzaSummary" class="col-12">
       </div>
       <hr>
@@ -86,11 +86,14 @@
       </div>
       <hr>
       <div id="smallPizzaSummary" class="col-12"></div>
-      <h2 class="text-center w-100 mb-4 col-12">בחירת רטבים</h3>
-      <p class="w-100 text-right">רוטב ראשון בחינם וכל אחד נוסף יעלה 2 ש"ח</p>
+      <h2 class="text-center w-100 mb-4 col-12">
+        <ins>בחירת רטבים:</ins>
+    </h2>
+      <p class="w-100 text-center h4 mb-5">רוטב ראשון בחינם וכל אחד נוסף יעלה 2 ש"ח</p>
 
       <!-- רטבים -->
-      <div class="row w-100 mb-2">
+      <!-- <div>
+              <div class="row w-100 mb-2">
           <h4 class="col-lg-2 text-right col-sm-5">שום</h4>
           <select class="form-control col-lg-2 col-sm-6 text-right" onchange="saucesChoose('sauceGarlic', 'שום')" id="sauceGarlic" >
               <option selected>0</option>
@@ -150,9 +153,66 @@
               <option value="9">9</option>
           </select>
       </div>
-    
+      </div> -->
       
-      
+     <div class="row d-flex justify-content-between w-100">
+       <!-- first sauce -->
+        <div class="col-md-4 " >
+            <div class="card" style="width: 18rem;">
+              <img class="card-img-top" src="img/sauceGarlic.jpg" height="200px" alt="רוטב שום פיצה מקס">
+              <div class="card-body">
+                <p class="card-text text-center h2">שום</p>
+                <div class="row p-3">
+                    <div class="d-flex justify-content-center mb-3 w-100">
+                      <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('sauceGarlic', 'remove', 2, 'sauce')">-</button>
+                      
+                      <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('sauceGarlic', 'add', 2, 'sauce')">+</button>
+  
+                  </div>
+                   <label for="" id="sauceGarlic" class=" col-12 text-center h2" data-name="שום">0</label>
+                </div>
+              </div>
+            </div>
+        </div>
+        <!-- second sauces -->
+        <div class="col-md-4 " >
+            <div class="card" style="width: 18rem;">
+              <img class="card-img-top" src="img/sauceThousandIslandDressing.jpg" height="200px" alt="רוטב אלף האיים">
+              <div class="card-body">
+                <p class="card-text text-center h2">אלף האיים</p>
+                <div class="row p-3">
+                    <div class="d-flex justify-content-center mb-3 w-100">
+                      <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('sauceThousandIslandDressing', 'remove', 2, 'sauce')">-</button>
+                      
+                      <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('sauceThousandIslandDressing', 'add', 2, 'sauce')">+</button>
+  
+                  </div>
+                   <label for="" id="sauceThousandIslandDressing" class=" col-12 text-center h2" data-name="אלף האיים">0</label>
+                </div>
+              </div>
+            </div>
+        </div>
+     
+      <!-- Third sauce -->
+   
+      <div class="col-md-4 " >
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="img/pizzaSauce.jpg" height="200px" alt="רוטב פיצה ">
+            <div class="card-body">
+              <p class="card-text text-center h2">רוטב פיצה</p>
+              <div class="row p-3">
+                  <div class="d-flex justify-content-center mb-3 w-100">
+                    <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('pizzaSauce', 'remove', 2, 'sauce')">-</button>
+                    
+                    <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('pizzaSauce', 'add', 2, 'sauce')">+</button>
+
+                </div>
+                 <label for="" id="pizzaSauce" class=" col-12 text-center h2" data-name="פיצה">0</label>
+              </div>
+            </div>
+          </div>
+      </div>  
+    </div>    
     </div>
 
     <!-- extra to pizza  -->

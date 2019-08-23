@@ -7,6 +7,7 @@
   <title>פיצה מקס</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+
 <body dir="rtl" class="bg-light">
   <!-- navbar -->
   <nav class="navbar navbar-light bg-white">
@@ -14,205 +15,37 @@
   </nav>
   <div class="container mt-4">
     <div class="row" id="pizzaReservation"  >
-      <!-- FIRST PIZZA -->
-      <div class="col-md-4 " >
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="img/pizza.jpg" alt="Card image cap">
-            <div class="card-body">
-              <p class="card-text text-right">פיצה ענקית (8 משולשים)</p>
-              <p class="card-text text-center">35 ש"ח</p>
-              <div class="row p-3">
-                  <div class="d-flex justify-content-center mb-3 w-100">
-                    <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('bigPizza', 'remove', 35)">-</button>
-                    
-                    <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('bigPizza', 'add', 35)">+</button>
-
-                </div>
-                 <label for="" id="bigPizza" class=" col-12 text-center h2">0</label>
-              </div>
-            
-            </div>
-          </div>
-      </div>
-      <!-- SECOND PIZZA -->
-      <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="img/pizza.jpg" alt="Card image cap">
-          <div class="card-body">
-            <p class="card-text text-right">פיצה משפחתית (6 משולשים)</p>
-            <p class="card-text text-center">30 ש"ח</p>
-            <div class="row p-3">
-                <div class="d-flex justify-content-center mb-3 w-100">
-                  <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('famillyPizza','remove', 30 )">-</button>
-                  
-                  <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('famillyPizza', 'add', 30 )">+</button>
-
-              </div>
-               <label for="" id="famillyPizza" class=" col-12 text-center h2">0</label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- THIRD PIZZA -->
-      <div iclass="col-md-4">
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="img/pizza.jpg" alt="Card image cap">
-            <div class="card-body">
-              <p class="card-text text-right">פיצה אישית (4 משולשים)</p>
-              <p class="card-text text-center">20 ש"ח</p>
-              <div class="row p-3">
-                  <div class="d-flex justify-content-center mb-3 w-100">
-                    <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('smallPizza', 'remove', 20)">-</button>
-                    
-                    <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('smallPizza', 'add', 20)">+</button>
-
-                </div>
-                 <label for="" id="smallPizza" class=" col-12 text-center h2">0</label>
-              </div>
-            </div>
-          </div>
-      </div>
+      <!-- Init with handlebars script -->
+ 
 
     </div>
     
     
     <!-- invitation pizza summary-->
     <div id="pizzaSummary" class="row d-none">
+      
       <h1 class="text-center w-100 mb-4 col-12"><ins>בחירת תוספות לפיצה</ins></h1>
-      <div id="bigPizzaSummary" class="col-12">
+      <div class="row w-100 justify-content-end" style="border-bottom: 1px solid rgba(0,0,0,.1)">
+          <div id="bigPizzaSummary" class="col-lg-4">
+            </div>
+            <div id="famillyPizzaSummary" class="col-lg-4">
+            </div>
+            <div id="smallPizzaSummary" class="col-lg-4"></div>
       </div>
       <hr>
-      <div id="famillyPizzaSummary" class="col-12">
-      </div>
-      <hr>
-      <div id="smallPizzaSummary" class="col-12"></div>
+      
+      
       <h2 class="text-center w-100 mb-4 col-12">
         <ins>בחירת רטבים:</ins>
     </h2>
       <p class="w-100 text-center h4 mb-5">רוטב ראשון בחינם וכל אחד נוסף יעלה 2 ש"ח</p>
 
       <!-- רטבים -->
-      <!-- <div>
-              <div class="row w-100 mb-2">
-          <h4 class="col-lg-2 text-right col-sm-5">שום</h4>
-          <select class="form-control col-lg-2 col-sm-6 text-right" onchange="saucesChoose('sauceGarlic', 'שום')" id="sauceGarlic" >
-              <option selected>0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-          </select>
-      </div>
-      <div class="row w-100 mb-2">
-          <h4 class="col-lg-2 col-sm-5 text-right">אלף האיים</h4>
-          <select class="form-control col-lg-2 col-sm-6 text-right" onchange="saucesChoose('sauceThousandIslandDressing', 'אלף האיים')" id="sauceThousandIslandDressing" >
-              <option selected>0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-          </select>
-      </div>
-      <div class="row w-100 mb-2">
-          <h4 class="col-lg-2 text-right col-sm-5">קטשופ</h4>
-          <select class="form-control col-lg-2 col-sm-6 text-right" onchange="saucesChoose('sauceKetchup', 'קטשופ')" id="sauceKetchup" >
-              <option selected>0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-          </select>
-      </div>
-      <div class="row w-100 mb-2">
-          <h4 class="col-lg-2 text-right col-sm-5">פיצה</h4>
-          <select class="form-control col-lg-2 col-sm-6 text-right" onchange="saucesChoose('saucePizza', 'פיצה')" id="saucePizza" >
-              <option selected>0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-          </select>
-      </div>
-      </div> -->
-      
-     <div class="row d-flex justify-content-between w-100">
-       <!-- first sauce -->
-        <div class="col-md-4 " >
-            <div class="card" style="width: 18rem;">
-              <img class="card-img-top" src="img/sauceGarlic.jpg" height="200px" alt="רוטב שום פיצה מקס">
-              <div class="card-body">
-                <p class="card-text text-center h2">שום</p>
-                <div class="row p-3">
-                    <div class="d-flex justify-content-center mb-3 w-100">
-                      <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('sauceGarlic', 'remove', 2, 'sauce')">-</button>
-                      
-                      <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('sauceGarlic', 'add', 2, 'sauce')">+</button>
-  
-                  </div>
-                   <label for="" id="sauceGarlic" class=" col-12 text-center h2" data-name="שום">0</label>
-                </div>
-              </div>
-            </div>
-        </div>
-        <!-- second sauces -->
-        <div class="col-md-4 " >
-            <div class="card" style="width: 18rem;">
-              <img class="card-img-top" src="img/sauceThousandIslandDressing.jpg" height="200px" alt="רוטב אלף האיים">
-              <div class="card-body">
-                <p class="card-text text-center h2">אלף האיים</p>
-                <div class="row p-3">
-                    <div class="d-flex justify-content-center mb-3 w-100">
-                      <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('sauceThousandIslandDressing', 'remove', 2, 'sauce')">-</button>
-                      
-                      <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('sauceThousandIslandDressing', 'add', 2, 'sauce')">+</button>
-  
-                  </div>
-                   <label for="" id="sauceThousandIslandDressing" class=" col-12 text-center h2" data-name="אלף האיים">0</label>
-                </div>
-              </div>
-            </div>
-        </div>
-     
-      <!-- Third sauce -->
-   
-      <div class="col-md-4 " >
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="img/pizzaSauce.jpg" height="200px" alt="רוטב פיצה ">
-            <div class="card-body">
-              <p class="card-text text-center h2">רוטב פיצה</p>
-              <div class="row p-3">
-                  <div class="d-flex justify-content-center mb-3 w-100">
-                    <button class="btn btn-danger col-6 ml-2 text-center" onclick="changePizzaAmount('pizzaSauce', 'remove', 2, 'sauce')">-</button>
-                    
-                    <button class="btn btn-success col-6 text-center" onclick="changePizzaAmount('pizzaSauce', 'add', 2, 'sauce')">+</button>
 
-                </div>
-                 <label for="" id="pizzaSauce" class=" col-12 text-center h2" data-name="פיצה">0</label>
-              </div>
-            </div>
-          </div>
-      </div>  
-    </div>    
+    
+      
+    <div id="sauce" class="row d-flex justify-content-between w-100">
+        <!-- init with handlebars -->
     </div>
 
     <!-- extra to pizza  -->
@@ -237,7 +70,7 @@
 
               <div class="form-check form-check-inline">
                 <input class="form-check-input extra-pizza" type="radio" name="inlineRadioOptions" id="halfPizza" value="halfPizza">
-                <label class="form-check-label mr-1" for="halfPizza">כל תופסת על חצי מגש</label>
+                <label class="form-check-label mr-1" for="halfPizza">כל תוספת על חצי מגש</label>
               </div>
 
               <div class="form-check form-check-inline">
@@ -247,8 +80,10 @@
               <!-- extra -->
               <div class="row">
                   <div class="form-check form-check-inline col-12">
-                      <input class="form-check-input extra-pizza" type="checkbox" id="tomato" value="tomato">
-                      <label class="form-check-label mr-1" for="tomato">עגבניה</label>
+                    
+                    <input class="form-check-input extra-pizza" type="checkbox" id="tomato" value="tomato">
+                    <label class="form-check-label mr-1 d-none" for="tomato">עגבניה</label>
+                    <img src="./img/tomato.jpg" height="100px" width="100px" alt="">
                   </div>
 
                   <div class="form-check form-check-inline col-12">
@@ -288,10 +123,12 @@
                       <textarea class="form-control" id="comment" placeholder="הערה" ></textarea>
                    </div>
               </div>
+            
+            
             </div>
 
-            <div class="modal-footer">
-              <button id="saveExtraPizza" type="button" class="btn btn-primary" >שמור</button>
+            <div class="modal-footer d-flex justify-content-center">
+              <button id="saveExtraPizza" type="button" class="btn btn-primary ml-2"  >שמור</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">סגור</button>
             </div>
           </div>
@@ -304,6 +141,7 @@
       <h2 class="col-12 text-right">פחית 6 ש"ח</h2>
 
       <div class="form-check form-check-inline col-12">
+          <img src="./img/colaTin.jpg" height="100px" width="100px" alt="">
           <input class="form-check-input drink-choose" type="checkbox" id="colaCan" data-cost="6">
           <label class="form-check-label mr-1" for="colaCan">פחית קולה</label>
       </div>
@@ -335,6 +173,7 @@
           <label class="form-check-label mr-1" for="bigBottleSprite">בקבוק גדול של ספרייט</label>
       </div>
     </div>
+  </div>
 
     <!-- summary ORDER -->
     <div id="orderSummary" class="row d-none">
@@ -369,17 +208,79 @@
     </div>
 
     <div id="btn-continue-and-reload" class="d-flex justify-content-end mb-3">
-        <a id="btnReload" class="btn btn-danger mt-3 p-3 d-none" onClick="window.location.reload();" href="">חזרה למסך הבית</a>
+        <button id="btnReload" class="btn btn-danger mt-3 p-3 d-none" onClick="window.location.reload();" >חזרה למסך הבית</button>
+        <button id="print" class="btn btn-primary mt-3 p-3 d-none " onclick="window.print();">הדפס</button>
         <button id="continueBtn" class="btn btn-success mt-3 p-3" style="margin-right: 15px">המשך</button>
         
-    </div>
+    </div>  
     
 
-  </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
+
+
+  <!--------------- handlebars scripts ---------------->
+
+<!-- pizza reservation -->
+  <script id="handlebars-pizza-reservation" type="text/x-handlebars-template">
+    {{#each pizza}}
+        <div class="col-md-4 " >
+            <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="img/pizza.jpg" alt="Card image cap">
+            <div class="card-body">
+                <p class="card-text text-right">{{pizzaDescription}}</p>
+                <p class="card-text text-center">{{cost}} ש"ח</p>
+                <div class="row p-3">
+                    <div class="d-flex justify-content-center mb-3 w-100">
+                    <button class="btn btn-danger col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="remove" >-</button>
+                    
+                    <button class="btn btn-success col-6 text-center btn-reservation" data-label-id="{{id}}" data-button-type="add" >+</button>
+
+                </div>
+                    <label  id={{id}} class=" col-12 text-center h2 btn-reservation" data-cost="{{cost}}">0</label>
+                </div>
+            
+            </div>
+            </div>
+        </div>
+    {{/each}}
+</script>
+
+<!-- sauce reservation-->
+<script id="handlebars-sauce-reservation" type="text/x-handlebars-template">
+
+  {{#each sauce}}
+    <div class="col-md-4 " >
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="img/{{imgPath}}" height="200px" alt="{{sauceHebrewName}}">
+          <div class="card-body">
+            <p class="card-text text-center h2">{{sauceHebrewName}}</p>
+            
+            <div class="row p-3">
+                <div class="d-flex justify-content-center mb-3 w-100">
+                  <button class="btn btn-danger col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="remove">-</button>
+
+                  <button class="btn btn-success col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="add">+</button>
+              </div>
+
+                <label id="{{id}}" class=" col-12 text-center h2" data-name="{{sauceHebrewName}}" data-cost="{{cost}}" data-type="sauce">0</label>
+            </div>
+          </div>
+        </div>
+    </div>
+  {{/each}}
+
+</script>
+<!-- end handlebars function -->
+
+  <!-- local script -->
+  <script src="./handlebars/handlebars.js"></script>
   <script src="./script.js"></script>
+
 </body>
 </html>

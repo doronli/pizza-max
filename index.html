@@ -6,6 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>פיצה מקס</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="./style.css">
+
 </head>
 
 <body dir="rtl" class="bg-light">
@@ -13,6 +18,9 @@
   <nav class="navbar navbar-light bg-white">
       <span class="navbar-brand mb-0 h1" style="font-size: 2.5rem !important">פיצה מקס</span>
   </nav>
+
+
+
   <div class="container mt-4">
     <div class="row" id="pizzaReservation"  >
       <!-- Init with handlebars script -->
@@ -33,29 +41,30 @@
             <div id="smallPizzaSummary" class="col-lg-4"></div>
       </div>
       <hr>
+    </div>
       
-      
+    <!-- THIRD SCREEN drink option -->
+    <div id="chooseSauce" class="d-none">
       <h2 class="text-center w-100 mb-4 col-12">
         <ins>בחירת רטבים:</ins>
-    </h2>
+      </h2>
       <p class="w-100 text-center h4 mb-5">רוטב ראשון בחינם וכל אחד נוסף יעלה 2 ש"ח</p>
-
+  
       <!-- רטבים -->
-
-    
-      
-    <div id="sauce" class="row d-flex justify-content-between w-100">
-        <!-- init with handlebars -->
+      <div id="sauce" class="row d-flex justify-content-between w-100">
+          <!-- init with handlebars -->
+      </div>
     </div>
+      
 
-    <!-- extra to pizza  -->
-    <div id="pizzaExtra" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <!-- Extra to pizza  -->
+    <div id="pizzaExtra" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">תוספות לפיצה</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                <span aria-d-none="true">&times;</span>
               </button>
             </div>
 
@@ -74,51 +83,22 @@
               </div>
 
               <div class="form-check form-check-inline">
-                <input class="form-check-input extra-pizza" type="radio" name="inlineRadioOptions" id="allPizza" value="allPizza">
+                <input class="form-check-input extra-pizza" type="radio" name="inlineRadioOptions" id="allPizza" value="allPizza" checked>
                 <label class="form-check-label mr-1" for="allPizza">כל תופסת על מגש שלם</label>
               </div><hr>
               <!-- extra -->
               <div class="row">
-                  <div class="form-check form-check-inline col-12">
-                    
-                    <input class="form-check-input extra-pizza" type="checkbox" id="tomato" value="tomato">
-                    <label class="form-check-label mr-1 d-none" for="tomato">עגבניה</label>
-                    <img src="./img/tomato.jpg" height="100px" width="100px" alt="">
+                  
+                  <!-- extra -->
+                  <div class="row" id="modal-extra-pizza">
+                  
                   </div>
 
-                  <div class="form-check form-check-inline col-12">
-                      <input class="form-check-input extra-pizza" type="checkbox" id="onion" value="onion">
-                      <label class="form-check-label mr-1" for="onion">בצל</label>
-                  </div>
 
-                  <div class="form-check form-check-inline col-12">
-                      <input class="form-check-input extra-pizza" type="checkbox" id="machroom" value="machroom">
-                      <label class="form-check-label mr-1" for="machroom">פטריות</label>
-                  </div>
-
-                  <div class="form-check form-check-inline col-12">
-                      <input class="form-check-input extra-pizza" type="checkbox" id="corn" value="corn">
-                      <label class="form-check-label mr-1" for="corn">תירס</label>
-                  </div>
-
-                  <div class="form-check form-check-inline col-12">
-                      <input class="form-check-input extra-pizza" type="checkbox" id="blackOlive" value="blackOlive">
-                      <label class="form-check-label mr-1" for="blackOlive">זיתים שחורים</label>
-                  </div>
-
-                  <div class="form-check form-check-inline col-12">
-                      <input class="form-check-input extra-pizza" type="checkbox" id="greenOlive" value="greenOlive">
-                      <label class="form-check-label mr-1" for="greenOlive">זיתים ירוקים</label>
-                  </div>
-
-                  <p class="font-weight-bold w-100 mt-1 mb-0">תוספת מיוחדת:</p>
-                  <div class="form-check form-check-inline col-12">
-
-                    <input class="form-check-input extra-pizza" type="checkbox" id="extraCheese" value="extraCheese">
-                    <label class="form-check-label mr-1" for="extraCheese">אקסטרה גבינה</label>
-                  </div>
-
-                  <p id="extra-pizza-message-error" class="w-100 text-danger d-none">*עד שתי תוספות לכל מגש</p>
+                  <p id="extra-pizza-message-error" class="w-100 text-danger d-none">
+                    *עד שתי תוספות לכל מגש
+                    <p class="mt-0">בבקשה בטל בחירת אחת של תוספת</p>
+                  </p>
                   <div class="form-group col-12 mt-3">
                       <textarea class="form-control" id="comment" placeholder="הערה" ></textarea>
                    </div>
@@ -135,45 +115,15 @@
         </div>
     </div>
 
-    <!-- THIRD SCREEN drink option -->
+
+   
+ 
+
+  <!-- FORTH screen -->
+
     <div class="row d-none" id="drinkOption">
-      <h1 class="col-12 text-center">בחירת משקה</h1>
-      <h2 class="col-12 text-right">פחית 6 ש"ח</h2>
 
-      <div class="form-check form-check-inline col-12">
-          <img src="./img/colaTin.jpg" height="100px" width="100px" alt="">
-          <input class="form-check-input drink-choose" type="checkbox" id="colaCan" data-cost="6">
-          <label class="form-check-label mr-1" for="colaCan">פחית קולה</label>
-      </div>
-      <div class="form-check form-check-inline col-12 mb-3">
-          <input class="form-check-input drink-choose" type="checkbox"  data-cost="6" id="spriteCan">
-          <label class="form-check-label mr-1" for="spriteCan">פחית ספרייט</label>
-      </div>
-
-
-      <h2 class="col-12 text-right">בקבוק קטן 9 ש"ח</h2>
-      <div class="form-check form-check-inline col-12">
-          <input class="form-check-input drink-choose" type="checkbox" id="smallBottleCola"data-cost="9" data-name="בקבוק קו">
-          <label class="form-check-label mr-1" for="smallBottleCola">
-            בקבוק קטן של קולה</label>
-      </div>
-
-      <div class="form-check form-check-inline col-12 mb-3">
-          <input class="form-check-input drink-choose" type="checkbox" id="smallBottleSprite" data-cost="9">
-          <label class="form-check-label mr-1" for="smallBottleSprite">בקבוק קטן של ספרייט</label>
-      </div>
-
-      <h2 class="col-12 text-right">בקבוק גדול 12 ש"ח</h2>
-      <div class="form-check form-check-inline col-12">
-          <input class="form-check-input drink-choose" type="checkbox" id="bigBottleCola" data-cost="12">
-          <label class="form-check-label mr-1" for="bigBottleCola">בקבוק גדול של קולה</label>
-      </div>
-      <div class="form-check form-check-inline col-12">
-          <input class="form-check-input drink-choose" type="checkbox" id="bigBottleSprite" data-cost="12">
-          <label class="form-check-label mr-1" for="bigBottleSprite">בקבוק גדול של ספרייט</label>
-      </div>
     </div>
-  </div>
 
     <!-- summary ORDER -->
     <div id="orderSummary" class="row d-none">
@@ -213,7 +163,8 @@
         <button id="continueBtn" class="btn btn-success mt-3 p-3" style="margin-right: 15px">המשך</button>
         
     </div>  
-    
+  </div>
+  
 
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -223,7 +174,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
 
-
+  
   <!--------------- handlebars scripts ---------------->
 
 <!-- pizza reservation -->
@@ -273,6 +224,55 @@
           </div>
         </div>
     </div>
+  {{/each}}
+
+</script>
+
+<!-- drink reservation -->
+<script id="handlebars-drink" type="text/x-handlebars-template">
+  {{#each drinks}}
+  <div class="mb-5 row w-100">
+  <h3 class="text-center w-100 mb-3">
+    <ins>{{hebrewDescription}}</ins>
+  </h3>
+
+  {{#each drinkArr}}
+    <div class="col-md-4 " >
+      <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="img/{{imgPath}}" height="150px" alt="{{drinkHebrewName}}">
+        <div class="card-body">
+          <p class="card-text text-center h2">{{drinkHebrewName}}</p>
+          
+          <div class="row p-3">
+              <div class="d-flex justify-content-center mb-3 w-100">
+                <button class="btn btn-danger col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="remove">-</button>
+
+                <button class="btn btn-success col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="add">+</button>
+            </div>
+
+              <label id="{{id}}" class=" col-12 text-center h2" data-name="{{drinkHebrewName}}" data-cost="{{cost}}" data-type="drink">0</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>
+{{/each}}
+  
+ 
+
+</script>
+<!-- init the extra on the pizza -->
+<script id="handlebars-extra-pizza" type="text/x-handlebars-template">
+
+  {{#each extra}}
+      <div class="col-xs-4 col-sm-3 col-md-4 nopad text-center">
+      <label class="image-checkbox extra-pizza" >
+          <img class="img-responsive" src="{{imagePath}}" width="150px" height="150px" id="{{id}}" value="{{value}}"/>
+          <input type="checkbox" name="image[]" value="" />
+          <i class="fa fa-check d-none"></i>
+      </label>
+      </div>
   {{/each}}
 
 </script>

@@ -13,11 +13,14 @@ $(document).ready(function(){
         e.preventDefault();
     });
 
+    // when the modal is open this function 
     $(document).on("click", ".append-pizza-modal" , function() {
+        console.log("click modal");
         callModal($(this).data("pizzaId"));
     });
   
  
+    // when modal is hide
     $('#pizzaExtra').on('hide.bs.modal', function (e) {
        
         let extraPizza = new Map();
@@ -43,30 +46,42 @@ $(document).ready(function(){
 
     // Remove or add 1 to input text of the pizzaId
     function changePizzaAmount(id, btnType, cost, type){
-    
+
+        const hebrewName = document.getElementById(id).getAttribute('data-name');
+        let amount = parseInt($(`#${id}`).text());
 
         if(type === "sauce"){
-            const hebrewName = document.getElementById(id).getAttribute('data-name');
+           
             saucesChoose(id, hebrewName, btnType);
         }
+        else {
+            if(type === "drink"){
+                drinkChoose({
+                    id: id,
+                    type: btnType,
+                    hebrewName: hebrewName,
+                    cost: cost
+                });
+            }
 
-        else { // pizza
-            let amountPizza = $(`#${id}`).text();
             if(btnType === 'add'){
                 price += cost;
-                amountPizza++;
+                amount++;
             }
             
-            else{
-                if(amountPizza > 0){
-                    amountPizza = parseInt(amountPizza) - 1;
+            else {
+                if(amount > 0){
+                    amount--;
                     price -= cost;
                 } 
             }
             
             $("#price").html(price);
-            $(`#${id}`).html(amountPizza);
-        }
+            $(`#${id}`).html(amount);
+        } 
+
+        
+
     }
 
 
@@ -83,9 +98,13 @@ $(document).ready(function(){
             thirdPage();
         }
         else if(pageNumber === 3){
-            summaryOrder();
+            forthPage();
         }
+        else{
+            summaryOrder();
 
+        }
+     
         pageNumber++;
     });
 
@@ -142,11 +161,17 @@ $(document).ready(function(){
 
     }
 
+    // sauce page
     function thirdPage(){
         $("#pizzaSummary").addClass("d-none");
-        $("#drinkOption").removeClass("d-none");
+        $("#chooseSauce").removeClass("d-none");
     }
-
+    
+    // drink page
+    function forthPage(){
+        $("#chooseSauce").addClass("d-none");
+        $("#drinkOption").removeClass('d-none');
+    }
 
 
     $(".extra-pizza").click(function(ev) {
@@ -160,12 +185,17 @@ $(document).ready(function(){
         
             priceOfExtraPizza = funcPriceOfExtraPizza(pizzaId, el);
 
-            // בדיקה אם נבחר יותר משתי תוספות
-            this.checked ? countExtraPizzaChoose++ : countExtraPizzaChoose--;
+            if(this.className.includes("image-checkbox-checked")){
+                countExtraPizzaChoose--;
+                tempPrice -= priceOfExtraPizza;
 
-            this.checked ? tempPrice += priceOfExtraPizza  : tempPrice -= priceOfExtraPizza;
-        
-        
+            } else {
+                countExtraPizzaChoose++;
+                tempPrice += priceOfExtraPizza;
+            }
+            
+            
+            // בדיקה אם נבחר יותר משתי תוספות
             if(countExtraPizzaChoose > 2) { // to much
                 $('#extra-pizza-message-error').removeClass('d-none');
                 $("#saveExtraPizza").attr("disabled", true);
@@ -177,7 +207,6 @@ $(document).ready(function(){
                 }
             }
             $("#price").html(price + tempPrice);
-
         }
 
         function funcPriceOfExtraPizza(pizzaId, el){
@@ -200,27 +229,39 @@ $(document).ready(function(){
 
 
 
-    $(".drink-choose").click(function(ev) {
-        let drinkCost = $(this).data("cost");
-        let pizzaId = $(this).attr('id');
-        let drinkHebrewName = $('label[for="' + pizzaId + '"]')[0].innerText;
+    function drinkChoose(drink){
 
-        if(this.checked){
-            price += drinkCost;
-            drinksChoose.push(drinkHebrewName);
+        const index = checkIfDrinkExist(drink.id);
+
+        if (index !== false){ // I need to update the row
+
+            if(drink.type === "add") {
+                drinksChoose[index].amount++
+            } 
+            else{
+                drinksChoose[index].amount === 1 ? drinksChoose.splice(index, 1) : drinksChoose[index].amount--;
+            }
         }
-
-        else{
-            price -= drinkCost;
-            let index = drinksChoose.indexOf(drinkHebrewName); 
-            index > -1 ? drinksChoose.splice(index, 1) : "";
+        else { // If not exist I need to add him
+            drinksChoose.push({
+                id: drink.id,
+                hebrewName: drink.hebrewName,
+                amount: 1
+            });
         }
-
-    
         console.log(drinksChoose);
-        $("#price").html(price);
-    })
+    }
 
+    // Return the index of the drink
+    function checkIfDrinkExist(drinkId){
+        let indexOfDrink = false;
+        drinksChoose.forEach((drink, index) =>{
+            if(drink.id === drinkId){
+                indexOfDrink = index;
+            }
+        });
+        return indexOfDrink;
+    }
 
     function summaryOrder(){
         $("#totalToPayText").removeClass("d-none");
@@ -233,8 +274,8 @@ $(document).ready(function(){
         if(drinksChoose.length > 0){
             $("#drinkSummary").removeClass('d-none');
             drinksChoose.forEach(drink =>{
-                $("#drinkSummary").append(`<p>${drink}</p>`);
-            })
+                $("#drinkSummary").append(`<p>${drink.hebrewName} <b> כמות:</b> ${drink.amount}</p>`);
+            });
         }
         if(sauceChoose.length > 0){
             $("#saucesSummary").removeClass('d-none');
@@ -348,13 +389,17 @@ $(document).ready(function(){
         $("#extraPizzaCost").html("");
 
         if(pizzaId.includes("big")){
-            $("#extraPizzaCost").append(`מחיר תוספת הוא 6 ש"ח, תוספת גבינה מחירה 8 ש"ח`);
+            $("#extraPizzaCost").append(`
+            מחיר תוספת 6 ש"ח לתוספת אחת על כל המגש, או 2 תוספות על חצי מגש,
+             תוספת גבינה מחירה 8 ש"ח`);
         }
         else if(pizzaId.includes("small")){
-            $("#extraPizzaCost").append(`מחיר תוספת הוא 2 ש"ח, תוספת גבינה מחירה 3 ש"ח`);
+            $("#extraPizzaCost").append(`
+            מחיר תוספת 2 ש"ח לתוספת אחת על כל המגש, או 2 תוספות על חצי מגש, תוספת גבינה מחירה 3 ש"ח`);
         }
         else{
-            $("#extraPizzaCost").append(`מחיר תוספת הוא 5 ש"ח, תוספת גבינה מחירה 6 ש"ח`);
+            $("#extraPizzaCost").append(`
+            מחיר תוספת 5 ש"ח לתוספת אחת על כל המגש, או 2 תוספות על חצי מגש, תוספת גבינה מחירה 6 ש"ח`);
         }
 
     }
@@ -363,7 +408,9 @@ $(document).ready(function(){
     // init the extra pizza that was choose
     function initTheExtraPizza(extraPizzaCheckedId){
         extraPizzaCheckedId.forEach(el => {
-            $('#' + el).prop('checked', true);
+            let img = document.getElementById(el);
+            img.parentNode.classList.add("image-checkbox-checked");
+            countExtraPizzaChoose++;
         })
     }
 
@@ -392,39 +439,47 @@ $(document).ready(function(){
         let extraPizza = new Map();
         extraPizza = setEextraPizzaMap();
 
-        extraPizza.forEach((value, key, map) => {
-            let isChecked = document.getElementById(key).checked;
-            if(isChecked === true){
-                if(key === "tomato"){
+        let cat = document.querySelectorAll('.image-checkbox');
+        cat.forEach((item) =>{
+            let classes = item.className;
+            let html = item.innerHTML;
+
+            let isChecked = classes.includes("image-checkbox-checked");
+
+            if(isChecked){
+                if(html.includes("tomato")){
                     extraPizzaChecked.tomato = true;
-                    extraPizzaCheckedId.push(key);
+                    extraPizzaCheckedId.push("tomato");
                 }
-                else if(key === "onion"){
+                else if(html.includes("onion")){
                     extraPizzaChecked.onion = true;
-                    extraPizzaCheckedId.push(key);
+                    extraPizzaCheckedId.push("onion");
                 }
-                else if(key === "machroom"){
+                else if(html.includes("machroom")){
                     extraPizzaChecked.machroom = true;
-                    extraPizzaCheckedId.push(key);
+                    extraPizzaCheckedId.push("machroom");
                 }
-                else if(key === "corn"){
+                else if(html.includes("corn")){
                     extraPizzaChecked.corn = true;
-                    extraPizzaCheckedId.push(key);
+                    extraPizzaCheckedId.push("corn");
                 }
-                else if(key === "extraCheese"){
+                else if(html.includes("extraCheese")){
                     extraPizzaChecked.extraCheese = true;
-                    extraPizzaCheckedId.push(key);
+                    extraPizzaCheckedId.push("extraCheese");
                 }
-                else if(key === "greenOlive"){
+                else if(html.includes("greenOlive")){
                     extraPizzaChecked.greenOlive = true;
-                    extraPizzaCheckedId.push(key);
+                    extraPizzaCheckedId.push("greenOlive");
                 }
                 else{
                     extraPizzaChecked.blackOlive = true;
-                    extraPizzaCheckedId.push(key);
+                    extraPizzaCheckedId.push("blackOlive");
                 }
             }
         });
+
+
+     
 
         let obj = {};
         document.getElementById('halfPizza').checked ? obj["howMuch"] = "חצי מגש" : obj["howMuch"] = "מגש שלם";
@@ -443,6 +498,15 @@ $(document).ready(function(){
         isExist === false ? allextraPizzaChoose.push(obj) : allextraPizzaChoose[isExist] = obj;
 
         initChececkBoxExtraPizza(extraPizza, true); 
+
+        //change the text of the pizza
+        let p = document.querySelectorAll('.append-pizza-modal');
+        p.forEach(el =>{
+            if(el.getAttribute('data-pizza-id') === obj["pizzaId"]){
+                el.innerHTML = "נבחרו תוספות עבור הפיצה";
+                el.classList.add("text-primary");            
+            }
+        })
     });
 
     
@@ -450,11 +514,14 @@ $(document).ready(function(){
     function initChececkBoxExtraPizza(extraPizza, hideModal){
         if(hideModal === true)
             $('#pizzaExtra').modal('hide');
-        extraPizza.forEach((value, key, map) => {
-            $(`#${key}`).prop("checked", false);
-        });
+        
+        let cat = document.querySelectorAll('.image-checkbox');
+        cat.forEach((item) =>{
+            let classes = item.classList.remove('image-checkbox-checked');
+        })
+       
         document.getElementById('halfPizza').checked = false;
-        document.getElementById('allPizza').checked = false;
+        document.getElementById('allPizza').checked = true;
 
         $("#comment").val("");
     }
@@ -572,4 +639,25 @@ $(document).ready(function(){
             $("#totalToPayText").removeClass('d-none');
         }
     });
+
+
+    // image gallery
+// init the state from the input
+$(".image-checkbox").each(function () {
+    if ($(this).find('input[type="checkbox"]').first().attr("checked")) {
+      $(this).addClass('image-checkbox-checked');
+    }
+    else {
+      $(this).removeClass('image-checkbox-checked');
+    }
+  });
+  
+  // sync the state to the input
+  $(".image-checkbox").on("click", function (e) {
+    $(this).toggleClass('image-checkbox-checked');
+    var $checkbox = $(this).find('input[type="checkbox"]');
+    $checkbox.prop("checked",!$checkbox.prop("checked"))
+  
+    e.preventDefault();
+  });
 })

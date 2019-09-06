@@ -119,6 +119,11 @@
                 "imagePath": "./img/greenOlive.jpg"
             },
             {
+                "id": "blackOlive",
+                "value": "blackOlive",
+                "imagePath": "./img/blackOlive.jpg"
+            },
+            {
                 "id": "extraCheese",
                 "value": "extraCheese",
                 "imagePath": "./img/extraCheese.jpg"
@@ -135,13 +140,13 @@
                 "drinkArr": [
                     {
                         "id":"spriteTin",
-                        "imgPath":"spriteTin.jpg",
+                        "imgPath":"spriteTin.png",
                         "cost": 6 ,
                         "drinkHebrewName": "פחית ספרייט"
                     },
                     {
                         "id":"colaTin",
-                        "imgPath":"colaTin.jpg",
+                        "imgPath":"colaTin.png",
                         "cost": 6 ,
                         "drinkHebrewName": "פחית קולה"
                     }
@@ -152,13 +157,13 @@
                 "drinkArr": [
                     {
                         "id":"smallSprite",
-                        "imgPath":"smallSprite.jpg",
+                        "imgPath":"smallSprite.png",
                         "cost": 9 ,
                         "drinkHebrewName": "בקבוק קטן של ספרייט"
                     },
                     {
                         "id":"smallCola",
-                        "imgPath":"smallCola.jpg",
+                        "imgPath":"smallCola.png",
                         "cost": 9 ,
                         "drinkHebrewName": "בקבוק קטן של קולה"
                     }
@@ -169,13 +174,13 @@
                 "drinkArr": [
                     {
                         "id":"bigSprite",
-                        "imgPath":"bigSprite.jpg",
+                        "imgPath":"bigSprite.png",
                         "cost": 12 ,
                         "drinkHebrewName": "בקבוק גדול של ספרייט"
                     },
                     {
                         "id": "bigCola",
-                        "imgPath": "bigCola.jpg",
+                        "imgPath": "bigCola.png",
                         "cost": 12 ,
                         "drinkHebrewName": "בקבוק גדול של קולה"
                     }

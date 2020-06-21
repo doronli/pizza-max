@@ -48,7 +48,7 @@
             else if(obj.Name === "billDeposited") { // נכנס שטר למכונה
                 const objBillInserted = obj.Value;
                 const billValue = objBillInserted.billValue / 100;
-                calcPriceToPay(coinValue);
+                calcPriceToPay(billValue);
             }
 
 

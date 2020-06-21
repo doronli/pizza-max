@@ -30,3 +30,32 @@
 .image-checkbox-checked .fa {
   display: block !important;
 }
+
+.hr{
+	border-top: 1px solid rgba(0,0,0,.1)
+}
+
+/* #pizzaSummaryOrder, 
+#drinkSummary, 
+#saucesSummary{
+	
+	border-bottom: 1px solid black;
+} */
+
+@media print {
+	* {
+		font-size: 14px;
+		/* margin: 0 !important; */
+		text-align: center;
+   		align-content: center;
+	}
+	#orderSummary{
+		width: 155px;
+		max-width: 155px;
+	}
+	#pizzaSummaryOrder, 
+	#drinkSummary, 
+	#saucesSummary{
+		border-bottom: 1px solid black;
+	}
+}

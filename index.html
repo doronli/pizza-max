@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>פיצה מקס</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="css/external/bootstrap.min.css">
   <!-- font awesome -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/external/font-awesome.min.css">
 
   <link rel="stylesheet" href="./style.css">
 
@@ -48,7 +49,10 @@
       <h2 class="text-center w-100 mb-4 col-12">
         <ins>בחירת רטבים:</ins>
       </h2>
-      <p class="w-100 text-center h4 mb-5">רוטב ראשון בחינם וכל אחד נוסף יעלה 2 ש"ח</p>
+      <p class="w-100 text-center h4 mb-5"
+      >
+      על כל מגש פיצה מגיע לך רוטב חינם, רוטב נוסף יעלה 2 ש"ח
+      </p>
   
       <!-- רטבים -->
       <div id="sauce" class="row d-flex justify-content-between w-100">
@@ -68,47 +72,62 @@
               </button>
             </div>
 
+           
             <div class="modal-body text-right">
               <p>בחר את התוספות הרצויות:</p>
               <p>
                 <span class="font-weight-bold">מחיר התוספות:</span><br/>
                 <span id="extraPizzaCost"></span>
+                <p>
+                  <b>הערה:</b>
+                  תוספות מיוחדות על כל המגש בלבד
+                </p>
               </p>
-             
-              <hr/>
 
-              <div class="form-check form-check-inline">
-                <input class="form-check-input extra-pizza" type="radio" name="inlineRadioOptions" id="halfPizza" value="halfPizza">
-                <label class="form-check-label mr-1" for="halfPizza">כל תוספת על חצי מגש</label>
-              </div>
-
-              <div class="form-check form-check-inline">
-                <input class="form-check-input extra-pizza" type="radio" name="inlineRadioOptions" id="allPizza" value="allPizza" checked>
-                <label class="form-check-label mr-1" for="allPizza">כל תופסת על מגש שלם</label>
-              </div><hr>
+              <h4 class="col-12 hr text-center"> 
+                  <ins> תוספת על מגש שלם או חצי מגש?</ins>
+              </h4>
+              <div class="d-flex justify-content-center ">
+                <div class="col-xs-4 col-sm-3 col-md-4 nopad text-center">
+                    <label class="image-checkbox quantity-extra-pizza" data-id="halfPizza">
+                          <img class="img-responsive" src="./img/halfPizza.jpg" width="100px" height="100px" id="halfPizza" >
+                          <input type="checkbox" name="image[]" value="">
+                          <i class="fa fa-check d-none"></i>
+                      </label>
+                  </div>
+    
+                  <div class="col-xs-4 col-sm-3 col-md-4 nopad text-center">
+                      <label class="image-checkbox quantity-extra-pizza" data-id="wholePizza">
+                          <img class="img-responsive" src="./img/wholePizza.jpg" width="100px" height="100px"
+                          id="wholePizza" >
+                          <input type="checkbox" name="image[]" value="">
+                          <i class="fa fa-check d-none"></i>
+                      </label>
+                    </div>
+                  </div>
+              <p id="whole-or-half-pizza-message-error" class="w-100 text-danger mt-2">
+                *שים לב יש לבחור אם אתה רוצה את התוספות על חצי מגש או מגש שלם
+              </p>
+              
               <!-- extra -->
-              <div class="row">
+              <div class="row hr">
                   
                   <!-- extra -->
                   <div class="row" id="modal-extra-pizza">
                   
                   </div>
-
-
                   <p id="extra-pizza-message-error" class="w-100 text-danger d-none">
-                    *עד שתי תוספות לכל מגש,
-                    בבקשה בטל בחירת אחת של תוספת
+                    *עד שתי תוספות רגילות לכל מגש
+                    
                   </p>
                   <div class="form-group col-12 mt-3">
                       <textarea class="form-control" id="comment" placeholder="הערה" ></textarea>
                    </div>
               </div>
-            
-            
             </div>
 
             <div class="modal-footer d-flex justify-content-center">
-              <button id="saveExtraPizza" type="button" class="btn btn-primary ml-2"  >שמור</button>
+              <button id="saveExtraPizza" type="button" class="btn btn-primary ml-2"  disabled>שמור</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">סגור</button>
             </div>
           </div>
@@ -127,7 +146,7 @@
 
     <!-- FIFTH SCREEN summary ORDER -->
     <div id="orderSummary" class="row d-none">
-      <h2 class="text-center"> סיכום הזמנה</h2>
+      <h2 style="text-decoration: underline" class="text-center"> סיכום הזמנה</h2>
 
       <div id="pizzaSummaryOrder" class="col-12 text-right">
           <h4>פיצות:</h4>
@@ -145,72 +164,157 @@
       </div>
     </div>
     
-    <!-- total price -->
+    <!-- Total price -->
     <div class="col-12 text-center mt-5 h2">
       סה"כ: 
       <span id="price">0</span>
       <span>ש"ח</span><br/>
 
       <div id="totalToPayText" class="d-none h4">
-        <span>לתשלום העבר כרטיס אשראי</span><br>
+        <span style="cursor: pointer;" data-toggle="modal" data-target="#myModal">לתשלום העבר כרטיס אשראי</span><br>
         <span>שלם במטבעות ושטרות, המכונה מחזירה עודף</span>
       </div>
     </div>
 
     <div id="btn-continue-and-reload" class="d-flex justify-content-end mb-3">
         <button id="btnBack" class="btn btn-danger mt-3 p-3 d-none" onclick="changePage('back')">חזרה למסך הקודם</button>
-        <button id="print" class="btn btn-primary mt-3 p-3 d-none " onclick="window.print();">הדפס</button>
+        <!-- <button id="print" class="btn btn-primary mt-3 p-3 d-none " onclick="printData()">הדפס</button> -->
         <button id="continueBtn" class="btn btn-success mt-3 p-3" style="margin-right: 15px" onclick="changePage('add')">המשך</button>
         
     </div>  
   </div>
-  
+
+ <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">לתשלום הכנס כסף במכונה</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body text-right">
+         הסכום לתשלום הוא:
+         <span id="priceToPayModal"> </span>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!--  -->
+<!-- <span style='required'>*</span> - Indicates required field.
+<div class='fields'>Swiped Information</div>
+<input type=text name='swiped' id='swiped'>
+</div>
+<div class='fields'>First Name</div>
+<input type=text name='first_name' id='first_name'><span style='required'>*</span>
+
+</div>
+<div class='fields'>Last Name</div>
+<input type=text name='last_name' id='last_name'><span style='required'>*</span>
+
+</div>
+<div class='fields'>Expiration</div>
+<input type=text size=8 name='expiration' id='expiration'><span style='required'>*</span>(MMYY)</div>
+<div class='fields'>CVV Code</div>
+<input type=text size=8 name='cvv' id='cvv'><span style='required'>*</span>
+
+</div>
+<div class='fields'>Credit Card Number</div>
+<input type=text name='card' id='card'><span style='required'>*</span>
+
+</div>
+<hr>
+<div class='buttons'></div>	<a onclick="readCard();" style="cursor:pointer; color:red;">Swipe Credit Card</a>
+
+</div> -->
 
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--  -->
+  <script src="scripts/external/jquery.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="scripts/external/poper.min.js"></script>
+  <script src="scripts/external/bootstrap.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
+  <script src="scripts/external/handlebars.min.js"></script>
+  <script src="scripts/external/sweetalert.min.js"></script>
 
   
   <!--------------- handlebars scripts ---------------->
 
-<!-- pizza reservation -->
-  <script id="handlebars-pizza-reservation" type="text/x-handlebars-template">
-    {{#each pizza}}
-        <div class="col-md-4 " >
-            <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="img/pizza.jpg" alt="Card image cap">
+  <!-- pizza reservation -->
+    <script id="handlebars-pizza-reservation" type="text/x-handlebars-template">
+      {{#each pizza}}
+          <div class="col-md-4 " >
+              <div class="card" style="width: 18rem;">
+              <img class="card-img-top" src="img/pizza.jpg" alt="Card image cap">
+              <div class="card-body">
+                  <p class="card-text text-right">{{pizzaDescription}}</p>
+                  <p class="card-text text-center">{{cost}} ש"ח</p>
+                  <div class="row p-3">
+                      <div class="d-flex justify-content-center mb-3 w-100">
+                      <button class="btn btn-danger col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="remove" >-</button>
+                      
+                      <button class="btn btn-success col-6 text-center btn-reservation" data-label-id="{{id}}" data-button-type="add" >+</button>
+
+                  </div>
+                      <label  id={{id}} class=" col-12 text-center h2 btn-reservation" data-cost="{{cost}}">0</label>
+                  </div>
+              
+              </div>
+              </div>
+          </div>
+      {{/each}}
+  </script>
+
+  <!-- sauce reservation-->
+  <script id="handlebars-sauce-reservation" type="text/x-handlebars-template">
+
+    {{#each sauce}}
+      <div class="col-md-4 " >
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="img/{{imgPath}}" height="200px" alt="{{sauceHebrewName}}">
             <div class="card-body">
-                <p class="card-text text-right">{{pizzaDescription}}</p>
-                <p class="card-text text-center">{{cost}} ש"ח</p>
-                <div class="row p-3">
-                    <div class="d-flex justify-content-center mb-3 w-100">
-                    <button class="btn btn-danger col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="remove" >-</button>
-                    
-                    <button class="btn btn-success col-6 text-center btn-reservation" data-label-id="{{id}}" data-button-type="add" >+</button>
+              <p class="card-text text-center h2">{{sauceHebrewName}}</p>
+              
+              <div class="row p-3">
+                  <div class="d-flex justify-content-center mb-3 w-100">
+                    <button class="btn btn-danger col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="remove">-</button>
 
+                    <button class="btn btn-success col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="add">+</button>
                 </div>
-                    <label  id={{id}} class=" col-12 text-center h2 btn-reservation" data-cost="{{cost}}">0</label>
-                </div>
-            
+
+                  <label id="{{id}}" class=" col-12 text-center h2" data-name="{{sauceHebrewName}}" data-cost="{{cost}}" data-type="sauce">0</label>
+              </div>
             </div>
-            </div>
-        </div>
+          </div>
+      </div>
     {{/each}}
-</script>
 
-<!-- sauce reservation-->
-<script id="handlebars-sauce-reservation" type="text/x-handlebars-template">
+  </script>
 
-  {{#each sauce}}
-    <div class="col-md-4 " >
+  <!-- drink reservation -->
+  <script id="handlebars-drink" type="text/x-handlebars-template">
+    {{#each drinks}}
+    <div class="mb-5 row w-100">
+
+    {{#each drinkArr}}
+      <div class="col-md-4 " >
         <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="img/{{imgPath}}" height="200px" alt="{{sauceHebrewName}}">
+          <img class="card-img-top img-thumbnail" src="img/{{imgPath}}" height="150px" alt="{{drinkHebrewName}}">
           <div class="card-body">
-            <p class="card-text text-center h2">{{sauceHebrewName}}</p>
+            <p class="card-text text-center h4">
+              {{drinkHebrewName}}
+              <p class="card-text text-center">{{cost}} ש"ח</p>
+            </p>
             
             <div class="row p-3">
                 <div class="d-flex justify-content-center mb-3 w-100">
@@ -219,71 +323,49 @@
                   <button class="btn btn-success col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="add">+</button>
               </div>
 
-                <label id="{{id}}" class=" col-12 text-center h2" data-name="{{sauceHebrewName}}" data-cost="{{cost}}" data-type="sauce">0</label>
+                <label id="{{id}}" class=" col-12 text-center h2" data-name="{{drinkHebrewName}}" data-cost="{{cost}}" data-type="drink">0</label>
             </div>
-          </div>
-        </div>
-    </div>
-  {{/each}}
-
-</script>
-
-<!-- drink reservation -->
-<script id="handlebars-drink" type="text/x-handlebars-template">
-  {{#each drinks}}
-  <div class="mb-5 row w-100">
-  <h3 class="text-center w-100 mb-3">
-    <ins>{{hebrewDescription}}</ins>
-  </h3>
-
-  {{#each drinkArr}}
-    <div class="col-md-4 " >
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top img-thumbnail" src="img/{{imgPath}}" height="150px" alt="{{drinkHebrewName}}">
-        <div class="card-body">
-          <p class="card-text text-center h4">
-            {{drinkHebrewName}}
-            <p class="card-text text-center">{{cost}} ש"ח</p>
-          </p>
-          
-          <div class="row p-3">
-              <div class="d-flex justify-content-center mb-3 w-100">
-                <button class="btn btn-danger col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="remove">-</button>
-
-                <button class="btn btn-success col-6 ml-2 text-center btn-reservation" data-label-id="{{id}}" data-button-type="add">+</button>
-            </div>
-
-              <label id="{{id}}" class=" col-12 text-center h2" data-name="{{drinkHebrewName}}" data-cost="{{cost}}" data-type="drink">0</label>
           </div>
         </div>
       </div>
-    </div>
+    {{/each}}
+  </div>
   {{/each}}
-</div>
-{{/each}}
+    
   
- 
 
-</script>
-<!-- init the extra on the pizza -->
-<script id="handlebars-extra-pizza" type="text/x-handlebars-template">
+  </script>
+  <!-- init the extra on the pizza -->
+  <script id="handlebars-extra-pizza" type="text/x-handlebars-template">
 
-  {{#each extra}}
-      <div class="col-xs-4 col-sm-3 col-md-4 nopad text-center">
-      <label class="image-checkbox extra-pizza" >
-          <img class="img-responsive" src="{{imagePath}}" width="150px" height="150px" id="{{id}}" value="{{value}}"/>
-          <input type="checkbox" name="image[]" value="" />
-          <i class="fa fa-check d-none"></i>
-      </label>
-      </div>
-  {{/each}}
+    {{#each extra}}
+        {{#if isSpecial}}
+          <div class="col-12">
+            <h4 class="w-100 text-center mt-3 hr" >
+              <ins> תוספות מיוחדות על כל המגש</ins>
+            </div>
+          </div>
+        {{/if}}
+        <div class="col-xs-4 col-sm-3 col-md-4 nopad text-center">
+          <label class="image-checkbox extra-pizza" data-id="{{value}}" >
+              <img class="img-responsive" src="{{imagePath}}" width="100px" height="100px" id="{{id}}" value="{{value}}"/>
+              <input type="checkbox" name="image[]" value="" />
+              <i class="fa fa-check d-none"></i>
+              {{#if isSpecial}}
+              <p class="text-center">{{hebrewName}}</p>
+              {{/if}}
+          </label>
+        </div>
+    {{/each}}
 
-</script>
-<!-- end handlebars function -->
+  </script>
+  <!-- end handlebars function -->
 
   <!-- local script -->
   <script src="./handlebars/handlebars.js"></script>
-  <script src="./script.js"></script>
+  <script src="./scripts/payout.js"></script>
+  <script src="./scripts/credit-card.js"></script>
+  <script src="./scripts/script.js?1.1"></script>
 
 </body>
 </html>

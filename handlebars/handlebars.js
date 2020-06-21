@@ -126,6 +126,8 @@
             {
                 "id": "extraCheese",
                 "value": "extraCheese",
+                "isSpecial": "true",
+                "hebrewName": "אקסטרה גבינה",
                 "imagePath": "./img/extraCheese.jpg"
             }
         
@@ -136,7 +138,7 @@
     function returnDrinksObject(){
         let drinks = [
             {
-                "hebrewDescription": `פחית 6 ש"ח`,
+                //"hebrewDescription": `פחית 6 ש"ח`,
                 "drinkArr": [
                     {
                         "id":"spriteTin",
@@ -153,7 +155,7 @@
                 ]
             },
             {
-                "hebrewDescription": `בקבוק קטן 9 ש"ח`,
+                //"hebrewDescription": `בקבוק קטן 9 ש"ח`,
                 "drinkArr": [
                     {
                         "id":"smallSprite",
@@ -170,7 +172,7 @@
                 ]
             },
             {
-                "hebrewDescription": `בקבוק גדול 12 ש"ח`,
+                //"hebrewDescription": `בקבוק גדול 12 ש"ח`,
                 "drinkArr": [
                     {
                         "id":"bigSprite",

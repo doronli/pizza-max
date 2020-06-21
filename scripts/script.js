@@ -1,7 +1,18 @@
 'use strict';
 
-// $(document).ready(function(){
+let pageNumber = 0;
+var price = 0, pizzaPrice = 0, extraPizzaPrice = 0, saucePrice = 0, drinksPrice = 0;
+let bigPizza, famillyPizza, smallPizza;
+var allextraPizzaChoose = [];
+var allPizzaId = [];
+var drinksChoose = [];
+var countExtraPizzaChoose = 0;
+let sauceChoose = [];
+var tempPrice = 0;
+let errorsList = {quantity: false, extraPizza: false};
+let screenIds = ['pizzaReservation', 'pizzaSummary', 'chooseSauce', 'drinkOption', 'orderSummary'];
 
+    //connect();
     // when the client click on pizza or sauce
     $(".btn-reservation").on('click', function(e) {
         const labelId = $(this).data("labelId");
@@ -24,35 +35,34 @@
        
         let extraPizza = new Map();
         extraPizza = setEextraPizzaMap();
-       initChececkBoxExtraPizza(extraPizza, false);
+       initModalParameter(false);
        // init the price
-       $("#price").html(price);
        tempPrice = 0;
        countExtraPizzaChoose = 0;
-        // do something…
     })
 
-    let secondPageWasCalled = false;
-    let pageNumber = 0;
-    var price = 0;
-    let bigPizza, famillyPizza, smallPizza;
-    var allextraPizzaChoose = [];
-    var allPizzaId = [];
-    var drinksChoose = [];
-    var countExtraPizzaChoose = 0;
-    let sauceChoose = [];
-    var tempPrice = 0;
-    let screenIds = ['pizzaReservation', 'pizzaSummary', 'chooseSauce', 'drinkOption', 'orderSummary'];
 
     // Remove or add 1 to input text of the pizzaId
     function changePizzaAmount(id, btnType, cost, type){
 
-        const hebrewName = document.getElementById(id).getAttribute('data-name');
         let amount = parseInt($(`#${id}`).text());
+
+        if(btnType === 'add'){               
+            amount++;
+        }           
+        else {
+            if(amount > 0){
+                amount--;              
+            } 
+        }
+
+        const hebrewName = document.getElementById(id).getAttribute('data-name');
 
         if(type === "sauce"){
             
-            saucesChoose(id, hebrewName, btnType);
+            if(!(amount === 0 && btnType === "remove")){
+                saucesChoose(id, hebrewName, btnType);
+            }
         }
         else {
             if(type === "drink"){
@@ -63,25 +73,21 @@
                     cost: cost
                 });
             }
-
-            if(btnType === 'add'){
-                price += cost;
-                amount++;
-            }
-            
-            else {
-                if(amount > 0){
-                    amount--;
-                    price -= cost;
-                } 
-            }
-            
-            $("#price").html(price);
-            $(`#${id}`).html(amount);
+            else { // pizza reservation
+                btnType === 'add' ?  pizzaPrice += cost :  pizzaPrice -= cost; 
+                if(amount === 0){
+                    const index = allPizzaId.indexOf(id);
+                    if (index > -1) {
+                        array.splice(index, 1);
+                    }
+                    
+                }
+                updateSaucePrice(); // למקרה שהוא משנה הזמנה
+                updatePrice();
+            }          
+    
         } 
-
-        
-
+        $(`#${id}`).html(amount);
     }
 
     function changePage(addOrBack){
@@ -89,24 +95,33 @@
 
         if(pageNumber === 0){
              document.getElementById("btnBack").classList.add('d-none');
+             $('#btn-continue-and-reload').removeClass('justify-content-between');
+             $('#btn-continue-and-reload').addClass('justify-content-end');
         }
+
         displayCurrentPage();
 
         if(pageNumber === 1){
-
+            
             firstPage();
             secondPage();
-            secondPageWasCalled = true;
         }
         else if(pageNumber === 2){
+            updateSaucePrice();
             updatePrice();
             thirdPage();
         }
         else if(pageNumber === 3){
             forthPage();
+            if(addOrBack === "back"){
+                $("#continueBtn").removeClass("d-none");
+                $("#totalToPayText").addClass('d-none');
+                // $("#print").addClass('d-none');
+            }
         }
         else if(pageNumber === 4){
             summaryOrder();
+            $("#continueBtn").addClass("d-none");
         }
      
     }
@@ -118,7 +133,8 @@
             idClasses = document.getElementById(screenIds[i]).classList;
             if(i !== pageNumber){
                 if(!document.getElementById(screenIds[i]).classList.contains('d-none')){
-                    idClasses.add('d-none');                }
+                    idClasses.add('d-none');                
+                }
             }
             else{
                 idClasses.remove('d-none');
@@ -135,66 +151,80 @@
 
         bigPizza = parseInt($("#bigPizza").text());    
         famillyPizza = parseInt($("#famillyPizza").text());    
-        smallPizza = parseInt($("#smallPizza").text());    
-       
+        smallPizza = parseInt($("#smallPizza").text());         
     }
 
-    function secondPage(addOrBack){
-        if(secondPageWasCalled === false){
-            let AppendPizzaHTML;
-            let id;
-            
-            if(bigPizza){
-                
-                
-                $("#bigPizzaSummary").append("<h3 class='text-right'>פיצה ענקית:</h3>");
-                for(let i = 0; i < bigPizza; i++){
-                    id = `bigpizza${i}`;
-                    AppendPizzaHTML = returnAppendPizzaHTML(id, i + 1);
-                    
-                    $("#bigPizzaSummary").append(AppendPizzaHTML)
-                    allPizzaId.push(id);
-                } // init the html
-            }
-            
-            if(famillyPizza){
-                $("#famillyPizzaSummary").html(''); // init the html
-                $("#famillyPizzaSummary").append("<h3 class='text-right'>פיצה משפחתית:</h3>");
-                
-                for(let i = 0; i < famillyPizza; i++){
-                    id = `famillypizza${i}`;
-                    AppendPizzaHTML = returnAppendPizzaHTML(id, i + 1);
-                    
-                    $("#famillyPizzaSummary").append(AppendPizzaHTML)
-                    allPizzaId.push(id);
-                }
-            }
-            
-            if(smallPizza){
-                $("#smallPizzaSummary").html(''); // init the html
-                $("#smallPizzaSummary").append("<h3 class='text-right'>פיצה אישית:</h3>");
-                
-                for(let i = 0; i < smallPizza; i++){
-                    id = `smallpizza${i}`;
-                    AppendPizzaHTML = returnAppendPizzaHTML(id, i + 1);
-                    
-                    $("#smallPizzaSummary").append(AppendPizzaHTML)
-                    allPizzaId.push(id);
-                }
-            }
+    function secondPage(){
         
-        }        
+        let AppendPizzaHTML;
+        let id;
+        
+        $("#bigPizzaSummary").html('');
+        $("#famillyPizzaSummary").html(''); 
+        $("#smallPizzaSummary").html('');
+        
+        if(bigPizza){
+            $("#bigPizzaSummary").append("<h3 class='text-right'>פיצה ענקית:</h3>");
+            for(let i = 0; i < bigPizza; i++){
+                id = `bigpizza${i}`;
+                AppendPizzaHTML = returnAppendPizzaHTML(id, i + 1);
+                
+                $("#bigPizzaSummary").append(AppendPizzaHTML);
+                if(allPizzaId.includes(id) === false){
+                    allPizzaId.push(id);
+                }
+                
+            } // init the html
+        }
+        
+        if(famillyPizza){
+            $("#famillyPizzaSummary").append("<h3 class='text-right'>פיצה משפחתית:</h3>");
+            
+            for(let i = 0; i < famillyPizza; i++){
+                id = `famillypizza${i}`;
+                AppendPizzaHTML = returnAppendPizzaHTML(id, i + 1);
+                
+                $("#famillyPizzaSummary").append(AppendPizzaHTML)
+                if(allPizzaId.includes(id) === false){
+                    allPizzaId.push(id);
+                }
+            }
+        }
+        
+        if(smallPizza){
+            $("#smallPizzaSummary").append("<h3 class='text-right'>פיצה אישית:</h3>");
+            
+            for(let i = 0; i < smallPizza; i++){
+                id = `smallpizza${i}`;
+                AppendPizzaHTML = returnAppendPizzaHTML(id, i + 1);
+                
+                $("#smallPizzaSummary").append(AppendPizzaHTML)
+                if(allPizzaId.includes(id) === false){
+                    allPizzaId.push(id);
+                }
+            }
+        }
+                     
     }
 
     // return html choosen pizza
     function returnAppendPizzaHTML(id, index){
 
+        let cssStyle = "", 
+            extraPizzaText = ` לחץ להוספת תוספת לפיצה מספר ${index}`; 
+        allextraPizzaChoose.forEach(ex =>{
+            if(id === ex.pizzaId){
+                extraPizzaText = "נבחרו תוספות עבור הפיצה";
+                cssStyle = "text-primary"
+            }
+        })
         
-        return `<p class="text-right btn w-100 pr-0 append-pizza-modal" data-toggle="modal" data-target="#pizzaExtra" data-pizza-id="${id}">לחץ להוספת תוספת לפיצה מספר ${index}</p>`;
+        return `<p class="text-right btn w-100 pr-0 append-pizza-modal ${cssStyle}" data-toggle="modal" data-target="#pizzaExtra" data-pizza-id="${id}"> ${extraPizzaText}</p>`;
     }
 
     // sauce page
     function thirdPage(){
+
 
     }
     
@@ -203,61 +233,60 @@
 
     }
 
+    // בדיקה האם נלחץ על חצי מגש או מגש שלם
+    function quantityOnPizza(){
+        let imageChecked = 0;
+        const list = document.querySelectorAll('.quantity-extra-pizza');
+
+        list.forEach(el =>{
+            if(el.classList.contains('image-checkbox-checked')){
+                imageChecked++;
+            }
+        });
+
+        if(imageChecked === 2 || imageChecked === 0){
+            errorsList.quantity = true;
+            $("#saveExtraPizza").attr("disabled", true);
+            $("#whole-or-half-pizza-message-error").removeClass('d-none');
+        }
+        else if(imageChecked === 1){
+            errorsList.quantity = false;
+            if(errorsList.extraPizza === false){
+                $("#saveExtraPizza").attr("disabled", false);
+            }
+            $("#whole-or-half-pizza-message-error").addClass('d-none');
+        }
+      
+    }
 
     $(".extra-pizza").click(function(ev) {
-
-        const el = ev.target.id;
-        const pizzaId = document.getElementById('pizzaExtra').getAttribute('data-pizza-id');
-        let priceOfExtraPizza;
-        
-        if(el !== "halfPizza" && el !== "allPizza"){
-
-            priceOfExtraPizza = funcPriceOfExtraPizza(pizzaId, el);
-            
+     
+        const extraId = $(this).data("id");
+        if(extraId !== "extraCheese"){
             if(this.className.includes("image-checkbox-checked")){
                 countExtraPizzaChoose--;
-                tempPrice -= priceOfExtraPizza;
     
             } else {
                 countExtraPizzaChoose++;
-                tempPrice += priceOfExtraPizza;
             }
         }
-       
-            
             
         // בדיקה אם נבחר יותר משתי תוספות
         if(countExtraPizzaChoose > 2) { // to much
+            errorsList.extraPizza = true;
+            
             $('#extra-pizza-message-error').removeClass('d-none');
             $("#saveExtraPizza").attr("disabled", true);
         }
 
-        else{
-            if($('#extra-pizza-message-error').hasClass('d-none') === false){
+        else if($('#extra-pizza-message-error').hasClass('d-none') === false){
+            errorsList.extraPizza = false;
                 $('#extra-pizza-message-error').addClass('d-none');
-                $("#saveExtraPizza").attr("disabled", false);
-            }
+                if(errorsList.quantity === false){
+                    $("#saveExtraPizza").attr("disabled", false);
+                }
         }
-        $("#halfPizza")[0].checked ? tempPrice /= 2 : "";
-        $("#price").html(price + tempPrice);
-        
-
-        function funcPriceOfExtraPizza(pizzaId, el){
-
-            let returnPrice;
-            // הפונקציה מחזירה את מחיר התופסת על פי גודל המגש
-            if(pizzaId.includes("big")){
-                el === "extraCheese" ? returnPrice = 8 : returnPrice = 7;
-            }
-            else if(pizzaId.includes("familly")){
-                el === "extraCheese" ? returnPrice = 6 : returnPrice = 5;         
-            }
-            else{ // small pizza
-                el === "extraCheese" ? returnPrice = 3 : returnPrice = 2;    
-            }
-
-            return returnPrice;
-        }
+       
     });
 
 
@@ -279,10 +308,21 @@
             drinksChoose.push({
                 id: drink.id,
                 hebrewName: drink.hebrewName,
-                amount: 1
+                amount: 1,
+                cost: drink.cost
             });
         }
-        console.log(drinksChoose);
+        drinksPrice = calcPriceOfDrinksChoose(drinksChoose);
+        updatePrice()
+
+    }
+
+    function calcPriceOfDrinksChoose(drinksChoose){
+        let total = 0;
+        drinksChoose.forEach(drink => {
+            total += drink.cost * drink.amount;
+        })
+        return total;
     }
 
     // Return the index of the drink
@@ -298,19 +338,20 @@
 
     function summaryOrder(){
         $("#totalToPayText").removeClass("d-none");
-        $("#print").removeClass('d-none');
-
+        // $("#print").removeClass('d-none');
+        $("#priceToPayModal").html($("#price").text());
 
         // drinks choose
         if(drinksChoose.length > 0){
             $("#drinkSummary").removeClass('d-none');
+            $("#drinkSummary").html("");
             drinksChoose.forEach(drink =>{
-                $("#drinkSummary").append(`<p>${drink.hebrewName} <b> כמות:</b> ${drink.amount}</p>`);
+                $("#drinkSummary").append(`<p>${drink.hebrewName} כמות:${drink.amount}</p>`);
             });
         }
         if(sauceChoose.length > 0){
             $("#saucesSummary").removeClass('d-none');
-
+            $("#saucesSummary").html("");
             sauceChoose.forEach(sauce =>{
                 $("#saucesSummary").append(`<p>
                 <span>סוג רוטב: ${sauce.sauceHebrewName}</span><br/>
@@ -320,13 +361,14 @@
         }
 
         if(allPizzaId.length > 0){
+            $("#pizzaSummaryOrder").html("");
             allPizzaId.forEach(pizzaId =>{
 
                 let isExtraPizzaId = returnExtraPizza(pizzaId);
                 let pizzaSize = returnPizzaSize(pizzaId);
 
                 let node = document.createElement("div");
-                node.className = "font-weight-bold";
+                node.className = "font-weight-bold mt-2";
                 let divPizzaSize = document.createTextNode(`${pizzaSize}`);
                 node.appendChild(divPizzaSize);
                 document.getElementById("pizzaSummaryOrder").appendChild(node);
@@ -338,14 +380,14 @@
                     // תוסםת על מגש שלם או חצי מגש
                     let divHowMuch = document.createElement("div");
 
-                    divHowMuch.className = "col-12 pr-0 mb-2";
-                    let txtHowMuch = document.createTextNode(`תוספת על: ${isExtraPizzaId["howMuch"]}`);
+                    divHowMuch.className = "col-12 pr-0";
+                    let txtHowMuch = document.createTextNode(`- תוספת על: ${isExtraPizzaId["howMuch"]}`);
                     divHowMuch.appendChild(txtHowMuch);
                     document.getElementById("pizzaSummaryOrder").appendChild(divHowMuch);
                     
                     // הוספת התוספות לפיצה
                     let nodeExtraChoose = document.createElement("div");
-                    let spanDivPizzaExtra = "תוספות לפיצה:";
+                    let spanDivPizzaExtra = "- תוספות לפיצה:";
 
                     isExtraPizzaId["extraPizzaChecked"].forEach(ex => {
                         spanDivPizzaExtra += ` ${ex}, `;
@@ -359,21 +401,26 @@
                     document.getElementById("pizzaSummaryOrder").appendChild(divPizzaExtra);
 
                     // COMMENT
-                    let nodeComment = document.createElement("div");
-                    nodeComment.className = "font-weight-bold mb-2";
-                    let divNodeComment = document.createTextNode(` הערה: ${isExtraPizzaId["comment"]}`);
-                    nodeComment.appendChild(divNodeComment);
-                    document.getElementById("pizzaSummaryOrder").appendChild(nodeComment);
-                    
+                    if(isExtraPizzaId["comment"] !== ""){
+                        let nodeComment = document.createElement("div");
+                        nodeComment.className = "mb-2";
+                        let divNodeComment = document.createTextNode(` הערה: ${isExtraPizzaId["comment"]}`);
+                        nodeComment.appendChild(divNodeComment);
+                        document.getElementById("pizzaSummaryOrder").appendChild(nodeComment);
+                    }
+                                   
                 }
 
                 else { //the pizza doesn't has extra
-                    $("#pizzaSummaryOrder").append(`<p class="mt-0 ">ללא תוספות</p>`);
-
+                    $("#pizzaSummaryOrder").append(`<span class="mr-1 ">- ללא תוספות</span>`);
                 }
-            })
+            });
         }
+
+        // connect to payment method
+        connect();
     }
+
 
     // return the size of the pizza (big, small, familly)
     function returnPizzaSize(pizzaId){
@@ -416,9 +463,17 @@
             initTheExtraPizza(allextraPizzaChoose[isExist].extraPizzaCheckedId);
             document.getElementById('comment').value = allextraPizzaChoose[isExist].comment;
             
-            if(allextraPizzaChoose[isExist].howMuch === "חצי מגש"){
-                document.getElementById('halfPizza').checked = true;
-            }
+            allextraPizzaChoose[isExist].howMuch === "חצי מגש"?
+                document.getElementById('halfPizza').parentNode.classList.add("image-checkbox-checked"):
+                document.getElementById('wholePizza').parentNode.classList.add("image-checkbox-checked");
+                $("#whole-or-half-pizza-message-error").addClass('d-none');
+                $("#saveExtraPizza").attr("disabled", false);
+
+                // init the countExtraPizzaChoose
+                countExtraPizzaChoose = allextraPizzaChoose[isExist].extraPizzaCheckedId.length;
+                if(allextraPizzaChoose[isExist].extraPizzaCheckedId.includes("extraCheese")){
+                    countExtraPizzaChoose--;
+                }
         }
 
         document.getElementById('pizzaExtra').setAttribute('data-pizza-id', pizzaId);
@@ -447,7 +502,7 @@
         extraPizzaCheckedId.forEach(el => {
             let img = document.getElementById(el);
             img.parentNode.classList.add("image-checkbox-checked");
-            countExtraPizzaChoose++;
+         
 
         })
     }
@@ -465,11 +520,6 @@
 
     $("#saveExtraPizza").click((ev)=> {
 
-        // init the price
-        price += tempPrice;
-
-        tempPrice = 0;
-
         countExtraPizzaChoose = 0; // איפוס התוספות שנבחרו
         const pizzaId = document.getElementById('pizzaExtra').getAttribute('data-pizza-id');
         
@@ -478,7 +528,7 @@
         let extraPizza = new Map();
         extraPizza = setEextraPizzaMap();
 
-        let cat = document.querySelectorAll('.image-checkbox');
+        let cat = document.querySelectorAll('.extra-pizza');
         cat.forEach((item) =>{
             let classes = item.className;
             let html = item.innerHTML;
@@ -517,11 +567,8 @@
             }
         });
 
-
-     
-
         let obj = {};
-        const isHalf = document.getElementById('halfPizza').checked;
+        const isHalf = document.getElementById('halfPizza').parentNode.classList.contains('image-checkbox-checked');
         isHalf ? obj["howMuch"] = "חצי מגש" : obj["howMuch"] = "מגש שלם";
         obj["comment"] = $("#comment").val();
         obj["pizzaId"] = extraPizzaChecked.pizzaId;
@@ -530,26 +577,28 @@
         
         // need to check if exist, if exist return the index else return false
         let isExist = false;
+        
         allextraPizzaChoose.forEach((extra, index) =>{
             if(extra.pizzaId === pizzaId)
                 isExist = index;
         });
         
         if(isExist === false) {
-            allextraPizzaChoose.push(obj);  
+            allextraPizzaChoose.push(obj);          
         }  
         else {
-
-            if(allextraPizzaChoose[isExist].howMuch !== obj.howMuch){
-                // the price before
-                initTheNewPrice(allextraPizzaChoose[isExist], obj);
-            }
             allextraPizzaChoose[isExist] = obj;
             // חישוב מחיר חדש אם המוכר בחר מגש שלם ועכשיו הוא בחר בחצי מגש
-
         }
 
-        initChececkBoxExtraPizza(extraPizza, true); 
+        // חישוב מחיר התוספות לפיצה מחדש
+        extraPizzaPrice = 0;
+        allextraPizzaChoose.forEach((extra, index) =>{
+            extraPizzaPrice += calcExtraPizzaCost(extra);
+        });
+
+        updatePrice();
+        initModalParameter(true); 
 
         //change the text of the pizza
         let p = document.querySelectorAll('.append-pizza-modal');
@@ -558,50 +607,26 @@
                 el.innerHTML = "נבחרו תוספות עבור הפיצה";
                 el.classList.add("text-primary");            
             }
-        });
-
-        
+        });    
     });
 
-    // עדכון מחיר חדש בעקבות שינוי של המשתמש על מחצי מגש למגש שלם
-    function initTheNewPrice(oldObj, newObj){
-        
-        let oldPrice = 0;
-        let newPrice = 0;
-        let discount = 0;
-        
+    // receive the pizza object and return the price of the extra pizza
+    function calcExtraPizzaCost(arrExtraPizza){
 
-        // שתי תוספות על חצי מגש זה כמו תוספת על מגש שלם
-        if(!(oldObj.extraPizzaCheckedId.length === 1 && newObj.extraPizzaCheckedId.length === 2)){
+        let extraCheezePrice = 0;
+        let totalPrice = 0;
 
-            oldObj.extraPizzaCheckedId.forEach(el =>{
-                oldPrice += PriceOfExtraPizza(oldObj.pizzaId, el);
-            });
+        arrExtraPizza.extraPizzaCheckedId.forEach(el =>{
+            let price = PriceOfExtraPizza(arrExtraPizza.pizzaId, el);
+            el === "extraCheese" ? extraCheezePrice = price : totalPrice += price;
+        });
 
-            newObj.extraPizzaCheckedId.forEach(el =>{
-                newPrice += PriceOfExtraPizza(newObj.pizzaId, el);
-            });
-            
-            let currentPrice = parseFloat($("#price").text());
-            if(oldObj.howMuch === "מגש שלם"){
-                newPrice /= 2; // חצי מגש מחיר מתחלק ב 2
-                discount = oldPrice - newPrice;
-                price = currentPrice - discount; 
+        arrExtraPizza.howMuch === "מגש שלם" ? totalPrice += extraCheezePrice : totalPrice = totalPrice / 2 + extraCheezePrice;
 
-            }
-            else{
-                oldPrice /= 2; // חצי מגש מחיר מתחלק ב 2
-                discount = newPrice - oldPrice;
-                price = currentPrice + discount; 
-
-            }
-            // יש הורדה במחיר, בגלל שינוי ממגש שלם לחצי מגש
-        }
-        
-        console.log(oldObj);
-        console.log(newObj);
+        return totalPrice;
     }
 
+    // receive an extra pizza and return the price
     function PriceOfExtraPizza(pizzaId, el){
 
         let returnPrice;
@@ -620,19 +645,21 @@
     }
 
     // ביטול כל התוספות שנבחרו לפיצה
-    function initChececkBoxExtraPizza(extraPizza, hideModal){
+    function initModalParameter(hideModal){
         if(hideModal === true)
             $('#pizzaExtra').modal('hide');
         
         let cat = document.querySelectorAll('.image-checkbox');
         cat.forEach((item) =>{
-            let classes = item.classList.remove('image-checkbox-checked');
-        })
+            item.classList.remove('image-checkbox-checked');
+        });
        
-        document.getElementById('halfPizza').checked = false;
-        document.getElementById('allPizza').checked = true;
-
         $("#comment").val("");
+        // errors list
+        errorsList.quantity = true;
+        errorsList.extraPizza = false;
+        $("#saveExtraPizza").attr("disabled", true);
+        $("#whole-or-half-pizza-message-error").removeClass('d-none');
     }
 
     function setEextraPizzaMap(){
@@ -683,9 +710,7 @@
         let curretValue = parseInt($("#" + id).text());
 
         if(btnType === 'add'){
-
-            $("#" + id).html(++curretValue);
-            
+            $("#" + id).html(++curretValue);         
         }
         else{
             if(curretValue > 0)
@@ -700,23 +725,24 @@
         if(sauceExistIndex === false){
             
             obj["amount"] = curretValue;
-            sauceChoose.push(obj);
-        
+            sauceChoose.push(obj);       
         }
         else{
-            
             sauceChoose[sauceExistIndex].amount = curretValue;
         }
 
-        let amountSaucePrice = 0;
-        sauceChoose.map(sauce => amountSaucePrice += parseInt(sauce.amount));
-        if(amountSaucePrice > 0){
-            // first sauce is free
-            amountSaucePrice = (amountSaucePrice - 1) * 2;
-        }
+        updateSaucePrice();
+        updatePrice();
+    }
 
-        $("#price").html(amountSaucePrice + price);
-    
+    function updateSaucePrice(){
+        let amountSauce = 0;
+        sauceChoose.map(sauce => amountSauce += parseInt(sauce.amount)); 
+
+        // על כל מגש משפחתי מגיע תוספת חינם
+       amountSauce > allPizzaId.length ?
+           saucePrice = (amountSauce - allPizzaId.length) * 2 : 
+           saucePrice = 0;
     }
 
     // if the sauce exist return the index else return false
@@ -727,12 +753,6 @@
         }
         return false;
     }
-
-    function updatePrice(){
-        price = parseInt($("#price").text());
-    }
-
-
 
     // print method before and after print
     let mediaQueryList = window.matchMedia('print');
@@ -749,11 +769,59 @@
         }
     });
 
+//     function printData(){
+   
+//         const summaryOrder = document.getElementById("orderSummary").innerHTML;
+//         var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+//         mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+//         mywindow.document.write(`<style>
+//         * {
+//             font-size: 14px;
+//             /* margin: 0 !important; */
+//             text-align: center;
+//                align-content: center;
+//         }
+//         #orderSummary{
+//             width: 155px;
+//             max-width: 155px;
+//         }
+//         #pizzaSummaryOrder, 
+//         #drinkSummary, 
+//         #saucesSummary{
+//             border-bottom: 1px solid black;
+//         }
+//         .font-weight-bold {
+//             font-weight: 700!important;
+//         }
+//         .mt-2 {
+//             margin-top: .5rem!important;
+//         }</style>`)
+//         mywindow.document.write('</head><body dir="rtl">');
+        
+//         mywindow.document.write(summaryOrder);
+//         let totalPrice = document.getElementById("price").innerHTML;
+//         let priceDesc = `<div style="text-decoration: underline">סה"כ ${totalPrice} ש"ח</div>`
+//         mywindow.document.write(priceDesc);
+//         mywindow.document.write(`<div style="margin-bottom: 20px; font-size:12px">תודה שקניתם בפיצה מקס :)</div>`);
+//         mywindow.document.write(`<p>&nbsp;&nbsp;&nbsp;</p>`);
+//         mywindow.document.write(`<p>-------------------</p>`);
+
+//         mywindow.document.write(`</body><script>
+//         window.onafterprint = function(){window.close()}
+//         </script></script></html>`);
+
+//         mywindow.document.close(); // necessary for IE >= 10
+//         mywindow.focus(); // necessary for IE >= 10*/
+
+//         mywindow.print();
+
+//   }
 
     // image gallery
 // init the state from the input
 $(".image-checkbox").each(function () {
-    if ($(this).find('input[type="checkbox"]').first().attr("checked")) {
+    if ($(this).find('input[type="checkbox"]').first().attr("checked")){
       $(this).addClass('image-checkbox-checked');
     }
     else {
@@ -763,10 +831,35 @@ $(".image-checkbox").each(function () {
   
   // sync the state to the input
   $(".image-checkbox").on("click", function (e) {
+    const id = e.target.id;
+    if(id === "halfPizza" || id === "wholePizza")
+        removeWholeOrHalfPizzaChecked(); 
+
     $(this).toggleClass('image-checkbox-checked');
     var $checkbox = $(this).find('input[type="checkbox"]');
-    $checkbox.prop("checked",!$checkbox.prop("checked"))
-  
+    $checkbox.prop("checked",!$checkbox.prop("checked"));
+    // בדיקה אם נבחר חצי או פיצה שלמה
+    quantityOnPizza();
+    
     e.preventDefault();
   });
-// })
+
+  // toggle class between whole and half pizza 
+  function removeWholeOrHalfPizzaChecked(){ 
+    const list = document.querySelectorAll('.quantity-extra-pizza');
+
+    list.forEach(el =>{
+        el.classList.remove('image-checkbox-checked');
+    });
+  }
+
+  function updatePrice(){
+    $("#price").html(pizzaPrice + extraPizzaPrice + saucePrice + drinksPrice);
+  }
+
+ 
+                // swal("תודה שקניתם בפיצה מקס!",
+                //  "ההזמנה תאותחל עוד 3 שניות...");
+
+                
+

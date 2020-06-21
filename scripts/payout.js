@@ -123,7 +123,7 @@
     function printData(){
    
         const summaryOrder = document.getElementById("orderSummary").innerHTML;
-        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        var mywindow = window.open('','','width=600,height=400');
 
         // mywindow.document.write('<html><head><title>' + document.title  + '</title>');
         mywindow.document.write(`<style>
@@ -162,9 +162,9 @@
         window.onafterprint = function(){window.close()}
         </script></script></html>`);
 
-        mywindow.document.close(); // necessary for IE >= 10
         mywindow.focus(); // necessary for IE >= 10*/
-
+        
         mywindow.print();
+        mywindow.document.close(); // necessary for IE >= 10
 
   }

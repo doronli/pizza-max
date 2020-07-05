@@ -856,10 +856,20 @@ $(".image-checkbox").each(function () {
   function updatePrice(){
     $("#price").html(pizzaPrice + extraPizzaPrice + saucePrice + drinksPrice);
   }
+  function initBridge() {
+    if (typeof (CefSharp) != "undefined") {
+        CefSharp.BindObjectAsync("boundAsync", "bound");
+        console.log('bind done 1');
+        boundAsync.isready();
+    }
+  }
+  $(window).load(function() {
+    initBridge();
+  });
 
  
                 // swal("תודה שקניתם בפיצה מקס!",
                 //  "ההזמנה תאותחל עוד 3 שניות...");
 
-                
-
+            
+               

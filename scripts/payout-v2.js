@@ -27,6 +27,38 @@
         }
     }
 
+    // insert coin
+    function updateAmountPaid(currentAmount, change, insertedCoinsBills){ // >int , int, json
+
+    } 
+
+    // which coin can be insert
+    function updateCoinBillStatus(data){ // json
+
+    }
+    
+    // Shows that the controller is connected to the computer
+    function isConnectedToMdbAdapter(state){ // bool
+
+    }
+
+    // error when you Spending money from a machine
+    function payoutError(amount) { 
+
+    }
+
+    // Shows how much money was left over
+    function updatePayout(paidAmountInAgorot, remainsAmountInAgorot, coins){ //  int, int, json
+
+    }
+
+    // מראה כמה כסף יש בתאי העודף
+    function updateTubeStatus (data){
+
+    }
+
+
+    
     function printAndReload(){
         printData();
         

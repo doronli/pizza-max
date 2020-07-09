@@ -32,21 +32,37 @@ function updateAmountPaid(currentAmount, change, insertedCoinsBills) {
     console.log("Not finished yet");
   } else {
     console.log("Paying is finshed. change: " + change);
-    //updatePayingFinish(change, insertedCoinsBills);
+    returnChange(change);
   }
 }
 
-// which coin can be insert
-function updateCoinBillStatus(data) {
-  // json
+
+function returnChange(amount) {
+  console.log("returnChange: " + amount);
+  boundAsync.returnChange(amount);
 }
 
+// refund the amount since last "startPayProcess" function
+function cancelPayingProcess() {
+  boundAsync.cancelPayingProcess(0);
+}
+
+
+
 // error when you Spending money from a machine
-function payoutError(amount) {}
+function payoutError(amount) {
+
+}
 
 // Shows how much money was left over
 function updatePayout(paidAmountInAgorot, remainsAmountInAgorot, coins) {
   //  int, int, json
+  console.log("** start update payout function **");
+  console.log(`paidAmountInAgorot : ${paidAmountInAgorot}`);
+  console.log(`remainsAmountInAgorot : ${remainsAmountInAgorot}`);
+  console.log(`coins : ${coins}`);
+  console.log("** end update payout function **");
+
 }
 
 function log(text) {
@@ -68,6 +84,8 @@ function updateTubeStatus(json) {
   console.log("Update tube status");
   console.log(json);
 }
+
+// which coin can be insert
 function updateCoinBillStatus(json) {
   console.log("updateCoinBillStatus JSON" + JSON.stringify(json));
 }

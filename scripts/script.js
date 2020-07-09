@@ -859,8 +859,9 @@ $(".image-checkbox").each(function () {
   function initBridge() {
     if (typeof (CefSharp) != "undefined") {
         CefSharp.BindObjectAsync("boundAsync", "bound");
-        console.log('bind done 1');
+        console.log('Is ready!');
         boundAsync.isready();
+        log('Starting the application');
     }
   }
   $(window).load(function() {

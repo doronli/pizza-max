@@ -29,7 +29,7 @@
 
     // insert coin
     function updateAmountPaid(currentAmount, change, insertedCoinsBills){ // >int , int, json
-
+    //if 'change' is undfined, the payin process not finished yet
     } 
 
     // which coin can be insert
@@ -58,7 +58,22 @@
     }
 
 
+    function log(text) {
+        console.log(text);
+        if (typeof (boundAsync) != 'undefined') {
+            if (typeof boundAsync.log === "function") {
+
+                boundAsync.log(text);
+            } else {
+                console.log('"log" is not a function');
+            }
+        }
+        else console.log('BOUND IS UNDEFINED');
+
+        console.log(text);
+    }
     
+
     function printAndReload(){
         printData();
         

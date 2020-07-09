@@ -54,10 +54,7 @@ function log(text) {
   console.log(text);
 }
 
-// Shows that the controller is connected to the computer
-function isConnectedToMdbAdapter(state) {
-  console.log("Is connected!");
-}
+
 // מראה כמה כסף יש בתאי העודף
 function updateTubeStatus(json) {
   //new

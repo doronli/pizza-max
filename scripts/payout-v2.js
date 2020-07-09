@@ -6,25 +6,28 @@ function connect() {
   priceToPay = $("#price").text();
   priceToPay = parseFloat(priceToPay);
   boundAsync.startPayProcess(priceToPay * 100);
+//   boundAsync.startPayProcess(priceToPay * 100);
 }
 
 function calcPriceToPay(payment) {
-  // כאשר נכנס שטר או מטבע חישוב כמה נשאר עוד לשלם
-  priceToPay -= payment;
-  $("#price").html(priceToPay);
+  // appear to user how much money left to pay
 
-  if (priceToPay === 0) {
-    printAndReload();
-  } else if (priceToPay < 0) {
-    payout(Math.abs(priceToPay));
+  if(payment < priceToPay){
+      $("#price").html(priceToPay - payment);
+  }
+  else {
+    $("#price").html(0);
     printAndReload();
   }
 }
 
-// insert coin
+// inserted coin function
 function updateAmountPaid(currentAmount, change, insertedCoinsBills) {
-  // >int , int, json
-  //if 'change' is undfined, the payin process not finished yet
+  /*
+    currentAmount - sum of the inserted coins in agorot
+    insertedCoinsBills - array of json of insted coin {qnt: 1 ,value: 500}
+    change - if 'change' is undfined, the payin process not finished yet
+  */
   console.log("** updateAmountPaid **");
   console.log(`currentAmount: ${currentAmount} `);
 
@@ -34,9 +37,10 @@ function updateAmountPaid(currentAmount, change, insertedCoinsBills) {
     console.log("Paying is finshed. change: " + change);
     returnChange(change);
   }
+  calcPriceToPay(currentAmount / 100);
 }
 
-
+// החזרת עודף ללקוח
 function returnChange(amount) {
   console.log("returnChange: " + amount);
   boundAsync.returnChange(amount);
@@ -46,8 +50,6 @@ function returnChange(amount) {
 function cancelPayingProcess() {
   boundAsync.cancelPayingProcess(0);
 }
-
-
 
 // error when you Spending money from a machine
 function payoutError(amount) {
@@ -103,10 +105,6 @@ function printAndReload() {
   setTimeout(() => {
     location.reload();
   }, 3000);
-}
-
-function payout(amountToPayout) {
-  ws.send(JSON.stringify({ name: "payout", value: amountToPayout * 100 }));
 }
 
 function printData() {

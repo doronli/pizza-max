@@ -28,7 +28,8 @@
     }
 
     // insert coin
-    function updateAmountPaid(currentAmount, change, insertedCoinsBills){ // >int , int, json
+    function updateAmountPaid(currentAmount, change, insertedCoinsBills){ 
+    // >int , int, json
     //if 'change' is undfined, the payin process not finished yet
     } 
 
@@ -72,8 +73,10 @@
 
         console.log(text);
     }
-    
 
+    function isConnectedToMdbAdapter(state) {
+        console.log('Is connected!');
+    }
     function printAndReload(){
         printData();
         

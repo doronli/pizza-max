@@ -64,7 +64,7 @@ function log(text) {
 function isConnectedToMdbAdapter(state) {
   console.log("Is connected!");
 }
-function updateTubesStatus(json) {
+function updateTubeStatus(json) {
   //new
   console.log(json);
 }

@@ -1,114 +1,98 @@
+var ws;
+var priceToPay;
+var arrTubeStatus; // רשימת המטבעות שאפשר להחזיר בעודף
 
-    
-    var ws ;
-    var priceToPay;
-    var arrTubeStatus; // רשימת המטבעות שאפשר להחזיר בעודף
+function connect() {
+  priceToPay = $("#price").text();
+  priceToPay = parseFloat(priceToPay);
+  boundAsync.startPayProcess(priceToPay * 100);
+}
 
+function calcPriceToPay(payment) {
+  // כאשר נכנס שטר או מטבע חישוב כמה נשאר עוד לשלם
+  priceToPay -= payment;
+  $("#price").html(priceToPay);
 
+  if (priceToPay === 0) {
+    printAndReload();
+  } else if (priceToPay < 0) {
+    payout(Math.abs(priceToPay));
+    printAndReload();
+  }
+}
 
-    function connect() {
-      
-        priceToPay = $("#price").text();
-        priceToPay = parseFloat(priceToPay);
-        boundAsync.startPayProcess(priceToPay * 100);
+// insert coin
+function updateAmountPaid(currentAmount, change, insertedCoinsBills) {
+  // >int , int, json
+  //if 'change' is undfined, the payin process not finished yet
+}
+
+// which coin can be insert
+function updateCoinBillStatus(data) {
+  // json
+}
+
+// Shows that the controller is connected to the computer
+function isConnectedToMdbAdapter(state) {
+  // bool
+}
+
+// error when you Spending money from a machine
+function payoutError(amount) {}
+
+// Shows how much money was left over
+function updatePayout(paidAmountInAgorot, remainsAmountInAgorot, coins) {
+  //  int, int, json
+}
+
+// מראה כמה כסף יש בתאי העודף
+function updateTubeStatus(data) {}
+
+function log(text) {
+  console.log(text);
+  if (typeof boundAsync != "undefined") {
+    if (typeof boundAsync.log === "function") {
+      boundAsync.log(text);
+    } else {
+      console.log('"log" is not a function');
     }
+  } else console.log("BOUND IS UNDEFINED");
 
-    function calcPriceToPay(payment){ // כאשר נכנס שטר או מטבע חישוב כמה נשאר עוד לשלם
-        priceToPay -= payment;
-        $("#price").html(priceToPay);
-        
-        if(priceToPay === 0){
-            printAndReload();
-        }
-        else if(priceToPay < 0){
-            payout(Math.abs(priceToPay));
-            printAndReload();
-            
-        }
-    }
+  console.log(text);
+}
 
-    // insert coin
-    function updateAmountPaid(currentAmount, change, insertedCoinsBills){ 
-    // >int , int, json
-    //if 'change' is undfined, the payin process not finished yet
-    } 
+function isConnectedToMdbAdapter(state) {
+  console.log("Is connected!");
+}
+function updateTubesStatus(json) {
+  //new
+  console.log(json);
+}
+function printAndReload() {
+  printData();
 
-    // which coin can be insert
-    function updateCoinBillStatus(data){ // json
+  swal({
+    title: "תודה שקניתם בפיצה מקס!",
+    text: "ההזמנה תאותחל עוד 3 שניות...",
+    icon: "success",
+    button: "תודה ובתאבון",
+  });
 
-    }
-    
-    // Shows that the controller is connected to the computer
-    function isConnectedToMdbAdapter(state){ // bool
+  setTimeout(() => {
+    location.reload();
+  }, 3000);
+}
 
-    }
+function payout(amountToPayout) {
+  ws.send(JSON.stringify({ name: "payout", value: amountToPayout * 100 }));
+}
 
-    // error when you Spending money from a machine
-    function payoutError(amount) { 
+function printData() {
+  const summaryOrder = document.getElementById("orderSummary").innerHTML;
+  var mywindow = window.open("", "", "width=600,height=400");
 
-    }
-
-    // Shows how much money was left over
-    function updatePayout(paidAmountInAgorot, remainsAmountInAgorot, coins){ //  int, int, json
-
-    }
-
-    // מראה כמה כסף יש בתאי העודף
-    function updateTubeStatus (data){
-
-    }
-
-
-    function log(text) {
-        console.log(text);
-        if (typeof (boundAsync) != 'undefined') {
-            if (typeof boundAsync.log === "function") {
-
-                boundAsync.log(text);
-            } else {
-                console.log('"log" is not a function');
-            }
-        }
-        else console.log('BOUND IS UNDEFINED');
-
-        console.log(text);
-    }
-
-    function isConnectedToMdbAdapter(state) {
-        console.log('Is connected!');
-    }
-    function printAndReload(){
-        printData();
-        
-        swal({
-            title: "תודה שקניתם בפיצה מקס!",
-            text: "ההזמנה תאותחל עוד 3 שניות...",
-            icon: "success",
-            button: "תודה ובתאבון",
-          });
-
-        setTimeout(() => {
-            location.reload();
-        }, 3000);
-    }
-
-    
-
-    function payout(amountToPayout) {
-    
-        ws.send( JSON.stringify({ name: 'payout', value: amountToPayout*100 }));
-    }
-    
-  
-        
-
-    function printData(){
-   
-        const summaryOrder = document.getElementById("orderSummary").innerHTML;
-        var mywindow = window.open('','','width=600,height=400');
-
-        // mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-        mywindow.document.write(`<style>
+  // mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+  mywindow.document.write(`<style>
         * {
             font-size: 14px;
             /* margin: 0 !important; */
@@ -129,24 +113,25 @@
         }
         .mt-2 {
             margin-top: .5rem!important;
-        }</style>`)
-        mywindow.document.write('</head><body dir="rtl">');
-        
-        mywindow.document.write(summaryOrder);
-        let totalPrice = document.getElementById("price").innerHTML;
-        let priceDesc = `<div style="text-decoration: underline">סה"כ ${totalPrice} ש"ח</div>`
-        mywindow.document.write(priceDesc);
-        mywindow.document.write(`<div style="margin-bottom: 20px; font-size:12px">תודה שקניתם בפיצה מקס :)</div>`);
-        mywindow.document.write(`<p>&nbsp;&nbsp;&nbsp;</p>`);
-        mywindow.document.write(`<p>-------------------</p>`);
+        }</style>`);
+  mywindow.document.write('</head><body dir="rtl">');
 
-        mywindow.document.write(`</body><script>
+  mywindow.document.write(summaryOrder);
+  let totalPrice = document.getElementById("price").innerHTML;
+  let priceDesc = `<div style="text-decoration: underline">סה"כ ${totalPrice} ש"ח</div>`;
+  mywindow.document.write(priceDesc);
+  mywindow.document.write(
+    `<div style="margin-bottom: 20px; font-size:12px">תודה שקניתם בפיצה מקס :)</div>`
+  );
+  mywindow.document.write(`<p>&nbsp;&nbsp;&nbsp;</p>`);
+  mywindow.document.write(`<p>-------------------</p>`);
+
+  mywindow.document.write(`</body><script>
         window.onafterprint = function(){window.close()}
         </script></script></html>`);
 
-        mywindow.focus(); // necessary for IE >= 10*/
-        
-        mywindow.print();
-        mywindow.document.close(); // necessary for IE >= 10
+  mywindow.focus(); // necessary for IE >= 10*/
 
-  }
+  mywindow.print();
+  mywindow.document.close(); // necessary for IE >= 10
+}

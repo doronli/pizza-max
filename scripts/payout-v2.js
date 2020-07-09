@@ -25,6 +25,15 @@ function calcPriceToPay(payment) {
 function updateAmountPaid(currentAmount, change, insertedCoinsBills) {
   // >int , int, json
   //if 'change' is undfined, the payin process not finished yet
+  console.log("** updateAmountPaid **");
+  console.log(`currentAmount: ${currentAmount} `);
+
+  if (change == undefined) {
+    console.log("Not finished yet");
+  } else {
+    console.log("Paying is finshed. change: " + change);
+    //updatePayingFinish(change, insertedCoinsBills);
+  }
 }
 
 // which coin can be insert
@@ -40,7 +49,6 @@ function updatePayout(paidAmountInAgorot, remainsAmountInAgorot, coins) {
   //  int, int, json
 }
 
-
 function log(text) {
   console.log(text);
   if (typeof boundAsync != "undefined") {
@@ -54,14 +62,14 @@ function log(text) {
   console.log(text);
 }
 
-
 // מראה כמה כסף יש בתאי העודף
 function updateTubeStatus(json) {
-  //new
+  //TODO: update the server
+  console.log("Update tube status");
   console.log(json);
 }
 function updateCoinBillStatus(json) {
-    console.log('updateCoinBillStatus JSON' + JSON.stringify(json));
+  console.log("updateCoinBillStatus JSON" + JSON.stringify(json));
 }
 
 function printAndReload() {

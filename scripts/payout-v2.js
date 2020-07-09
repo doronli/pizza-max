@@ -68,6 +68,10 @@ function updateTubesStatus(json) {
   //new
   console.log(json);
 }
+function updateCoinBillStatus(json) {
+    console.log('updateCoinBillStatus JSON' + JSON.stringify(json));
+}
+
 function printAndReload() {
   printData();
 

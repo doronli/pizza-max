@@ -137,7 +137,7 @@ function printData() {
   mywindow.document.write('</head><body dir="rtl">');
 
   mywindow.document.write(summaryOrder);
-  let totalPrice = document.getElementById("price").innerHTML;
+  let totalPrice = priceToPay;
   let priceDesc = `<div style="text-decoration: underline">סה"כ ${totalPrice} ש"ח</div>`;
   mywindow.document.write(priceDesc);
   mywindow.document.write(

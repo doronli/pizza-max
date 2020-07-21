@@ -12,7 +12,6 @@ var tempPrice = 0;
 let errorsList = {quantity: false, extraPizza: false};
 let screenIds = ['pizzaReservation', 'pizzaSummary', 'chooseSauce', 'drinkOption', 'orderSummary'];
 
-    //connect();
     // when the client click on pizza or sauce
     $(".btn-reservation").on('click', function(e) {
         const labelId = $(this).data("labelId");
@@ -44,7 +43,7 @@ let screenIds = ['pizzaReservation', 'pizzaSummary', 'chooseSauce', 'drinkOption
 
     // Remove or add 1 to input text of the pizzaId
     function changePizzaAmount(id, btnType, cost, type){
-
+        let isOk = true;
         let amount = parseInt($(`#${id}`).text());
 
         if(btnType === 'add'){               
@@ -53,41 +52,51 @@ let screenIds = ['pizzaReservation', 'pizzaSummary', 'chooseSauce', 'drinkOption
         else {
             if(amount > 0){
                 amount--;              
+            }
+            else{
+                // need to break
+                isOk = false;
             } 
         }
-
-        const hebrewName = document.getElementById(id).getAttribute('data-name');
-
-        if(type === "sauce"){
-            
-            if(!(amount === 0 && btnType === "remove")){
-                saucesChoose(id, hebrewName, btnType);
-            }
-        }
-        else {
-            if(type === "drink"){
-                drinkChoose({
-                    id: id,
-                    type: btnType,
-                    hebrewName: hebrewName,
-                    cost: cost
-                });
-            }
-            else { // pizza reservation
-                btnType === 'add' ?  pizzaPrice += cost :  pizzaPrice -= cost; 
-                if(amount === 0){
-                    const index = allPizzaId.indexOf(id);
-                    if (index > -1) {
-                        array.splice(index, 1);
-                    }
-                    
-                }
-                updateSaucePrice(); // למקרה שהוא משנה הזמנה
-                updatePrice();
-            }          
+        if(isOk){
+            const hebrewName = document.getElementById(id).getAttribute('data-name');
     
-        } 
-        $(`#${id}`).html(amount);
+            if(type === "sauce"){
+                saucesChoose(id, hebrewName, btnType);
+                
+                // if((amount === 0 && btnType === "remove")){
+                //     saucesChoose(id, hebrewName, btnType);
+                // }
+                // else{
+                //     removeSauce();
+                // }
+            }
+            else {
+                if(type === "drink"){
+                    drinkChoose({
+                        id: id,
+                        type: btnType,
+                        hebrewName: hebrewName,
+                        cost: cost
+                    });
+                }
+                else { // pizza reservation
+                    btnType === 'add' ?  pizzaPrice += cost :  pizzaPrice -= cost; 
+                    if(amount === 0){
+                        const index = allPizzaId.indexOf(id);
+                        if (index > -1) {
+                            array.splice(index, 1);
+                        }
+                        
+                    }
+                    updateSaucePrice(); // למקרה שהוא משנה הזמנה
+                    updatePrice();
+                }          
+        
+            } 
+            $(`#${id}`).html(amount);
+
+        }
     }
 
     function changePage(addOrBack){
@@ -353,10 +362,12 @@ let screenIds = ['pizzaReservation', 'pizzaSummary', 'chooseSauce', 'drinkOption
             $("#saucesSummary").removeClass('d-none');
             $("#saucesSummary").html("");
             sauceChoose.forEach(sauce =>{
-                $("#saucesSummary").append(`<p>
-                <span>סוג רוטב: ${sauce.sauceHebrewName}</span><br/>
-                <span>כמות רוטב: ${sauce.amount}</span>
-                </p>`);
+                if(sauce.amount > 0){
+                    $("#saucesSummary").append(`<p>
+                    <span>סוג רוטב: ${sauce.sauceHebrewName}</span><br/>
+                    <span>כמות רוטב: ${sauce.amount}</span>
+                    </p>`);
+                }
             })
         }
 
@@ -743,6 +754,10 @@ let screenIds = ['pizzaReservation', 'pizzaSummary', 'chooseSauce', 'drinkOption
        amountSauce > allPizzaId.length ?
            saucePrice = (amountSauce - allPizzaId.length) * 2 : 
            saucePrice = 0;
+        
+        if(amountSauce === allPizzaId.length){
+            saucePrice = 0;
+        }
     }
 
     // if the sauce exist return the index else return false

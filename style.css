@@ -35,6 +35,14 @@
 	border-top: 1px solid rgba(0,0,0,.1)
 }
 
+.card-img-top{
+	height: 180px;
+    object-fit: cover;
+}
+#drinkOption .card-img-top{
+	height: 180px;
+    object-fit: contain;
+}
 /* #pizzaSummaryOrder, 
 #drinkSummary, 
 #saucesSummary{
